@@ -1,3 +1,3 @@
-# pagarapido-php
+# push-notification
 
-Pagarapido lib
+Remote Push Notification for Android and iOS
