@@ -64,6 +64,16 @@ class PushNotificationController extends Controller {
 				}
 				$file_path = public_path() . "/apps/ios_push/";
 				$dir_file = $file_path . $ios_auth_token_file_name;
+
+				//check if path apps existis (the function file_exists check path too)
+				if (!file_exists(public_path() . "/apps")) {
+					mkdir(public_path() . "/apps", 0777, true);
+				}
+				if (!file_exists(public_path() . "/apps/ios_push")) {
+					mkdir(public_path() . "/apps/ios_push", 0777, true);
+				}
+
+
 				$p8_file_upload->move($file_path, $ios_auth_token_file_name . ".p8");
 				
 
