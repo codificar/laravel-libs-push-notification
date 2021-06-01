@@ -6,6 +6,8 @@ import Vue from 'vue';
 
 import SettingsPushNotification from './pages/PushNotificationSettings.vue';
 
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
 
 //Allows localization using trans()
 Vue.prototype.trans = (key) => {

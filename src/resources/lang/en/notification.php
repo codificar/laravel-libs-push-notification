@@ -1,6 +1,19 @@
 <?php
 
 return array(
-	'user' 							=> 'Usuário',
-	'provider' 						=> 'Motorista'
+	'user' 							=> 'User',
+	'provider' 						=> 'Driver',
+	'push_settings'					=> 'Push Notification Setting',
+	'home'							=> 'Home',
+	'push_notification'				=> 'Push Notifications',
+	'ios_settings'					=> 'iOS Settings',
+	'android_settings'				=> 'Android Settings',
+	'team_id'						=> 'Team ID',
+	'key_id'						=> 'Key ID',
+	'provider_package'				=> 'Provider App Package',
+	'user_package'					=> 'User App Package',
+	'save_ios_settings'				=> 'Save iOS Settings',
+	'settings_saved'				=> 'Saved settings',
+	'yes'							=> 'Yea',
+	'no'							=> 'No'
 );

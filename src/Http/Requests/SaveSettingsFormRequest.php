@@ -23,13 +23,27 @@ class SaveSettingsFormRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            //
-        ];
-    }
+	public function rules()
+	{
+		return [
+            'ios_key_id'        => ['required', 'string'],
+            'ios_team_id'       => ['required', 'string'],
+            'package_user'      => ['required', 'string'],
+            'package_provider'  => ['required', 'string'],
+			'p8_file_upload'    => ['nullable', 'file']
+		];
+	}
 
+	public function messages() {
+		return [
+            'ios_key_id.required'       => 'Key Id é necessário',
+            'ios_team_id.required'      => 'Team Id é necessário',
+            'package_user.required'     => 'User Package é necessário',
+            'package_provider.required' => 'Provider Package Id é necessário',
+            'p8_file_upload.file'       => 'O arquivo precisa ter a extensão .p8'
+		];
+	}
+	
     /**
      * retorna um json caso a validação falhe.
      */
