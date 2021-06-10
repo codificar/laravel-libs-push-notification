@@ -23,6 +23,9 @@
 			ios-team-id="{{ $ios_team_id }}"
 			package-user="{{ $package_user }}"
 			package-provider="{{ $package_provider }}"
+			gcm-browser-key="{{ $gcm_browser_key }}"
+			audio-push-url="{{ $audio_push_url }}"
+			audio-push-cancel-url="{{ $audio_push_cancellation }}"
 		>
 		</settingsnotification>
 		

@@ -15,5 +15,9 @@ return array(
 	'save_ios_settings'				=> 'Salvar configurações iOS',
 	'settings_saved'				=> 'Configurações salvas',
 	'yes'							=> 'Sim',
-	'no'							=> 'Não'
+	'no'							=> 'Não',
+	'save_android_settings'			=> 'Salvar configurações Android',
+	'gcm_browser_key'    			=> 'Chave de Navegação GCM',
+	'audio_push'					=> 'Arquivo de Áudio',
+	'audio_push_cancellation'		=> 'Áudio de cancelamento de corrida'
 );

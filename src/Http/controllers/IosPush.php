@@ -98,8 +98,6 @@ class IosPush extends Controller {
 		if ($result === FALSE) {
 			throw new Exception("Curl failed: " .  curl_error($http2ch));
 		}
-		
-		print_r($result);
 
 		$http_status = curl_getinfo($http2ch, CURLINFO_HTTP_CODE);
 

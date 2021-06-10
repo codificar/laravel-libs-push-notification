@@ -6,7 +6,8 @@ Route::group(array('namespace' => 'Codificar\PushNotification\Http\Controllers')
     // Rotas do painel web
     Route::group(['prefix' => '/admin/libs/push_notification', 'middleware' => 'auth.admin'], function () {
         Route::get('/', array('as' => 'AdminGetPushNotificationSettings', 'uses' => 'PushNotificationController@getPushNotificationSettings'));
-        Route::post('/save_settings', array('as' => 'AdminSavePushNotificationSettings', 'uses' => 'PushNotificationController@savePushNotificationSettings'));
+        Route::post('/save_settings/ios', array('as' => 'AdminSavePushNotificationSettingsIos', 'uses' => 'PushNotificationController@savePushNotificationSettingsIos'));
+        Route::post('/save_settings/android', array('as' => 'AdminSavePushNotificationSettingsAndroid', 'uses' => 'PushNotificationController@savePushNotificationSettingsAndroid'));
     });
 
 });

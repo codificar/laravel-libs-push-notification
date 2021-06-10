@@ -16,6 +16,8 @@ use Codificar\PushNotification\Http\Resources\SaveSettingsResource;
 use Carbon\Carbon;
 use Auth;
 
+use Illuminate\Support\Str;
+
 use Input, Validator, View, Response, Session;
 use Settings;
 
@@ -28,6 +30,9 @@ class PushNotificationController extends Controller {
 		$ios_package_user = Settings::findByKey('ios_package_user');
 		$ios_package_provider = Settings::findByKey('ios_package_provider');
 		$ios_auth_token_file_name = Settings::findByKey('ios_auth_token_file_name');
+		$gcm_browser_key = Settings::findByKey('gcm_browser_key');
+		$audio_push_url = Settings::findByKey('audio_push');
+		$audio_push_cancellation = Settings::findByKey('audio_push_cancellation');
 
 		$ios_p8url = null;
 		if($ios_auth_token_file_name) {
@@ -38,10 +43,13 @@ class PushNotificationController extends Controller {
 					->with('ios_key_id', $ios_key_id)
 					->with('ios_team_id', $ios_team_id)
 					->with('package_user', $ios_package_user)
-					->with('package_provider', $ios_package_provider);
+					->with('package_provider', $ios_package_provider)
+					->with('gcm_browser_key', $gcm_browser_key)
+					->with('audio_push_url', $audio_push_url)
+					->with('audio_push_cancellation', $audio_push_cancellation);
 	}
 
-    public function savePushNotificationSettings(SaveSettingsFormRequest $request) {
+    public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {
 
 		$this->updateSetting('ios_key_id', $request->ios_key_id);
 		$this->updateSetting('ios_team_id', $request->ios_team_id);
@@ -100,6 +108,81 @@ class PushNotificationController extends Controller {
 		return new SaveSettingsResource($data);
 			
 	}
+
+
+	public function savePushNotificationSettingsAndroid() {
+
+		$gcm = Input::get('gcm_browser_key');
+		$this->updateSetting('gcm_browser_key', $gcm ? $gcm : '');
+
+		$this->saveAudioCancellationPush();
+		$this->addAudioPush();
+        
+		// Return data
+		$data = array(
+			"success" => true,
+			"error" => false
+		);
+
+		return new SaveSettingsResource($data);
+			
+	}
+
+	protected function saveAudioCancellationPush() {
+		if(Input::hasFile('audio_push_cancellation')) {
+
+			// Upload File
+			$file = Input::file('audio_push_cancellation');
+			$file_name = Str::random(10);
+			$ext  = $file->getClientOriginalExtension();
+			$size = round( $file->getSize() / 1000 );
+
+			if($ext == "mp3" && $size < 100) {
+				$file->move(public_path() . "/apps/audio", $file_name . "." . $ext);
+				$local_url = $file_name . "." . $ext;
+
+				// salva no s3 se for o caso
+				upload_to_s3($file_name, $local_url);
+
+				$audio_url = asset_url() . '/apps/audio/' . $local_url;
+
+				///salvar url no banco de dados.
+				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_url]);
+			}
+		}
+
+	}
+
+	protected function addAudioPush() {
+		if (Input::hasFile('audio_push')) {
+
+			// Upload File
+			$file = Input::file('audio_push');
+			$file_name = Str::random(10);
+			$ext  = $file->getClientOriginalExtension();
+			$size = round( $file->getSize() / 1000 );
+
+			if ($ext == "mp3" && $size < 100) {
+				
+				$file->move(public_path() . "/apps/audio", $file_name . "." . $ext);
+				$local_url = $file_name . "." . $ext;
+
+				// salva no s3 se for o caso
+				upload_to_s3($file_name, $local_url);
+
+				$audio_url = asset_url() . '/apps/audio/' . $local_url;
+
+				///salvar url no banco de dados.
+
+				$settings = Settings::where('key', 'audio_push')->first();
+				$settings->value = $audio_url;
+				$settings->save();
+
+			}
+		}
+
+	}
+	
 
 	private function updateSetting($key, $value) {
 		Settings::where('key', $key)->first()->update(['value' => $value]);

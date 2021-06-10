@@ -15,5 +15,9 @@ return array(
 	'save_ios_settings'				=> 'Save iOS Settings',
 	'settings_saved'				=> 'Saved settings',
 	'yes'							=> 'Yea',
-	'no'							=> 'No'
+	'no'							=> 'No',
+	'save_android_settings'			=> 'Save android settings',
+	'gcm_browser_key'    			=> 'GCM Browser Key',
+	'audio_push'					=> 'Audio File',
+	'audio_push_cancellation'		=> 'Audio Cancel File'
 );

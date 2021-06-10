@@ -15,5 +15,9 @@ return array(
 	'save_ios_settings'				=> 'Guardar la configuración de iOS',
 	'settings_saved'				=> 'Configuración guardada',
 	'yes'							=> 'Sí',
-	'no'							=> 'No'
+	'no'							=> 'No',
+	'save_android_settings'			=> 'Guardar la configuración de Android',
+	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
+	'audio_push'					=> 'Archivo de audio',
+	'audio_push_cancellation'		=> 'Carrera cancelar audio'
 );
