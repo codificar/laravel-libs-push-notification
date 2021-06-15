@@ -2,6 +2,9 @@
 Remote Push Notification for Android and iOS
 
 ## Configuração no iOS 
+### Fluxo do APNS (Apple Push Notification Service)
+![alt text](https://git.codificar.com.br/laravel-libs/push-notification/raw/master/img/authtoken.png)
+
 ### É necessário configurar apenas no painel: 
 - [Team ID](#team-id)
 - [Arquivo p8](#arquivo-p8)
