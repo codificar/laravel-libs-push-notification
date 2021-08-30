@@ -138,13 +138,13 @@ class PushNotificationController extends Controller {
 			$size = round( $file->getSize() / 1000 );
 
 			if($ext == "mp3" && $size < 100) {
-				$file->move(public_path() . "/apps/audio", $file_name . "." . $ext);
+				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
 				$local_url = $file_name . "." . $ext;
 
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/apps/audio/' . $local_url;
+				$audio_url = asset_url() . '/uploads/audio//' . $local_url;
 
 				///salvar url no banco de dados.
 				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_url]);
@@ -164,13 +164,13 @@ class PushNotificationController extends Controller {
 
 			if ($ext == "mp3" && $size < 100) {
 				
-				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+				$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
 				$local_url = $file_name . "." . $ext;
 
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . "/uploads/audio/" . $local_url;
+				$audio_url = asset_url() . "/uploads/audio//" . $local_url;
 
 				///salvar url no banco de dados.
 
