@@ -10,14 +10,14 @@
 			<li class="breadcrumb-item active">{{ trans('push::notification.push_notification') }}</li>
 		</ol>
 	</div>
-</div>	
+</div>
 @stop
 
 
 @section('content')
 	<div id="VueJs" class="col-sm-12">
-		
-		<settingsnotification 
+
+		<settingsnotification
 			ios-p8url="{{ $ios_p8url }}"
 			ios-key-id="{{ $ios_key_id }}"
 			ios-team-id="{{ $ios_team_id }}"
@@ -25,14 +25,15 @@
 			package-provider="{{ $package_provider }}"
 			gcm-browser-key="{{ $gcm_browser_key }}"
 			audio-push-url="{{ $audio_push_url }}"
+			audio-url="{{ $audio_url }}"
 			audio-push-cancel-url="{{ $audio_push_cancellation }}"
 		>
 		</settingsnotification>
-		
+
 	</div>
 @stop
 
 @section('javascripts')
-<script src="/libs/push_notification/lang.trans/notification"> </script> 
-<script src="{{ elixir('vendor/codificar/push_notification/push_notification.vue.js') }}"> </script> 
+<script src="/libs/push_notification/lang.trans/notification"> </script>
+<script src="{{ elixir('vendor/codificar/push_notification/push_notification.vue.js') }}"> </script>
 @stop

@@ -23,7 +23,7 @@ use Settings;
 
 class PushNotificationController extends Controller {
 
-	public function getPushNotificationSettings(){		
+	public function getPushNotificationSettings(){
 
 		$ios_key_id = Settings::findByKey('ios_key_id');
 		$ios_team_id = Settings::findByKey('ios_team_id');
@@ -83,11 +83,11 @@ class PushNotificationController extends Controller {
 
 
 				$p8_file_upload->move($file_path, $ios_auth_token_file_name . ".p8");
-				
+
 
 				//convert p8 to pem file. the command is: openssl pkcs8 -nocrypt -in file.p8 -out file.pem
-				exec("openssl pkcs8 -nocrypt -in " .$dir_file . ".p8" . " -out " .$dir_file . ".pem");				
-				
+				exec("openssl pkcs8 -nocrypt -in " .$dir_file . ".p8" . " -out " .$dir_file . ".pem");
+
 				//cria o token jwt para enviar os push notifications
 				$iosPush = new IosPush();
 				$private_key_pem_str = "file://" . $dir_file . ".pem";
@@ -98,7 +98,7 @@ class PushNotificationController extends Controller {
                 fclose($fp);
 			}
 		}
-        
+
 		// Return data
 		$data = array(
 			"success" => true,
@@ -106,7 +106,7 @@ class PushNotificationController extends Controller {
 		);
 
 		return new SaveSettingsResource($data);
-			
+
 	}
 
 
@@ -117,7 +117,8 @@ class PushNotificationController extends Controller {
 
 		$this->saveAudioCancellationPush();
 		$this->addAudioPush();
-        
+		$this->saveAudioAlert();
+
 		// Return data
 		$data = array(
 			"success" => true,
@@ -125,7 +126,31 @@ class PushNotificationController extends Controller {
 		);
 
 		return new SaveSettingsResource($data);
-			
+
+	}
+
+	protected function saveAudioAlert() {
+		if(Input::hasFile('audio_url')) {
+
+			// Upload File
+			$file = Input::file('audio_url');
+			$file_name = Str::random(10);
+			$ext  = $file->getClientOriginalExtension();
+			$size = round( $file->getSize() / 1000 );
+
+			if($ext == "mp3" && $size < 100) {
+				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+				$local_url = $file_name . "." . $ext;
+
+				// salva no s3 se for o caso
+				upload_to_s3($file_name, $local_url);
+
+				$audio_url = asset_url() . '/uploads/audio//' . $local_url;
+
+				///salvar url no banco de dados.
+				Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_url]);
+			}
+		}
 	}
 
 	protected function saveAudioCancellationPush() {
@@ -163,7 +188,7 @@ class PushNotificationController extends Controller {
 			$size = round( $file->getSize() / 1000 );
 
 			if ($ext == "mp3" && $size < 100) {
-				
+
 				$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
 				$local_url = $file_name . "." . $ext;
 
@@ -182,7 +207,7 @@ class PushNotificationController extends Controller {
 		}
 
 	}
-	
+
 
 	private function updateSetting($key, $value) {
 		Settings::where('key', $key)->first()->update(['value' => $value]);

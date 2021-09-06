@@ -19,8 +19,8 @@ class LibModel extends Eloquent
      */
     public $timestamps = true;
 
-	public static function modelTest() {		
+	public static function modelTest() {
 		return true;
 	}
-	
+
 }

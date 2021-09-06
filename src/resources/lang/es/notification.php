@@ -19,5 +19,6 @@ return array(
 	'save_android_settings'			=> 'Guardar la configuración de Android',
 	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
 	'audio_push'					=> 'Archivo de audio',
-	'audio_push_cancellation'		=> 'Carrera cancelar audio'
+	'audio_push_cancellation'		=> 'Carrera cancelar audio',
+	"audio_url"						=> 'Audio Url'
 );
