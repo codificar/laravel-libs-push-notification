@@ -32,6 +32,7 @@ class PushNotificationController extends Controller {
 		$ios_auth_token_file_name = Settings::findByKey('ios_auth_token_file_name');
 		$gcm_browser_key = Settings::findByKey('gcm_browser_key');
 		$audio_push_url = Settings::findByKey('audio_push');
+		$audio_url = Settings::findByKey('audio_url');
 		$audio_push_cancellation = Settings::findByKey('audio_push_cancellation');
 
 		$ios_p8url = null;
@@ -46,6 +47,7 @@ class PushNotificationController extends Controller {
 					->with('package_provider', $ios_package_provider)
 					->with('gcm_browser_key', $gcm_browser_key)
 					->with('audio_push_url', $audio_push_url)
+					->with('audio_url', $audio_url)
 					->with('audio_push_cancellation', $audio_push_cancellation);
 	}
 
