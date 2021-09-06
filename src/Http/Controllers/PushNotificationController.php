@@ -72,15 +72,15 @@ class PushNotificationController extends Controller {
 					$ios_auth_token_file_name = sha1(time() . rand());
 					$this->updateSetting('ios_auth_token_file_name', $ios_auth_token_file_name);  // o nome do arquivo precisa ser aleatorio. Se fosse nome fixo, qualquer usuario poderia acessar o arquivo no navegador, pois esta salvo na pasta public
 				}
-				$file_path = public_path() . "/apps/ios_push/";
+				$file_path = storage_path() . "/app/ios_push/";
 				$dir_file = $file_path . $ios_auth_token_file_name;
 
 				//check if path apps existis (the function file_exists check path too)
-				if (!file_exists(public_path() . "/apps")) {
-					mkdir(public_path() . "/apps", 0777, true);
+				if (!file_exists(storage_path() . "/app")) {
+					mkdir(storage_path() . "/app", 0777, true);
 				}
-				if (!file_exists(public_path() . "/apps/ios_push")) {
-					mkdir(public_path() . "/apps/ios_push", 0777, true);
+				if (!file_exists(storage_path() . "/app/ios_push")) {
+					mkdir(storage_path() . "/app/ios_push", 0777, true);
 				}
 
 
