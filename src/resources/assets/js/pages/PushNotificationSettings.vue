@@ -106,7 +106,7 @@ export default {
           }
 
 		  if(this.audioUrl) {
-            formData.append('audio_push', this.audioUrl);
+            formData.append('audio_url', this.audioUrl);
           }
 
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
