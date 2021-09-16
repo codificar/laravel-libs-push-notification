@@ -171,7 +171,7 @@ class PushNotificationController extends Controller {
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/uploads/audio//' . $local_url;
+				$audio_url = asset_url() . '/uploads/audio/' . $local_url;
 
 				///salvar url no banco de dados.
 				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_url]);
