@@ -269,7 +269,7 @@ export default {
                 <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
               </div>
               <br>
-              <form v-if="show_upload_btn_audio_url" id="modalFormRetUrl">
+              <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
                 <input
                   type="file"
