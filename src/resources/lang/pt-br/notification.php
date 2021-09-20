@@ -20,5 +20,5 @@ return array(
 	'gcm_browser_key'    			=> 'Chave de Navegação GCM',
 	'audio_push'					=> 'Arquivo de Áudio',
 	'audio_push_cancellation'		=> 'Áudio de cancelamento de corrida',
-	"audio_url"						=> 'Áudio Url'
+	"audio_url"						=> 'Áudio beep da corrida'
 );
