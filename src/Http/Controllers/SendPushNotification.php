@@ -26,7 +26,7 @@ class SendPushNotification extends Controller {
         }
 
         $iosPush = new IosPush();
-        $dir_file = public_path() . "/apps/ios_push/" . $ios_auth_token_file_name;
+        $dir_file = storage_path() . "/apps/ios_push/" . $ios_auth_token_file_name;
         $dir_file_jwt = $dir_file . ".jwt.txt";
 
         if(!$ios_key_id || !$ios_team_id || !$ios_auth_token_file_name || !$package || !file_exists($dir_file_jwt)) {
