@@ -26,7 +26,7 @@ class SendPushNotification extends Controller {
         }
 
         $iosPush = new IosPush();
-        $dir_file = storage_path() . "/apps/ios_push/" . $ios_auth_token_file_name;
+        $dir_file = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name;
         $dir_file_jwt = $dir_file . ".jwt.txt";
 
         if(!$ios_key_id || !$ios_team_id || !$ios_auth_token_file_name || !$package || !file_exists($dir_file_jwt)) {
@@ -48,9 +48,6 @@ class SendPushNotification extends Controller {
                 $pushStatus = $iosPush->send($token_jwt, $package, $device_token, $title, $msg);
             }
         }
-
-          
-  
 	}
 
     public function sendAndroidPush($holder, $device_token, $title, $msg, $payload) {

@@ -37,7 +37,7 @@ class PushNotificationController extends Controller {
 
 		$ios_p8url = null;
 		if($ios_auth_token_file_name) {
-			$ios_p8url = asset_url() . "/apps/ios_push/" . $ios_auth_token_file_name . ".p8";
+			$ios_p8url = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name . ".p8";
 		}
 		return View::make('push_notification::settings')
 					->with('ios_p8url', $ios_p8url)
