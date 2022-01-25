@@ -35,5 +35,5 @@
 
 @section('javascripts')
 <script src="/libs/push_notification/lang.trans/notification"> </script>
-<script src="{{ elixir('vendor/codificar/push_notification/push_notification.vue.js') }}"> </script>
+<script src="{{ asset('vendor/codificar/push_notification/push_notification.vue.js') }}"> </script>
 @stop
