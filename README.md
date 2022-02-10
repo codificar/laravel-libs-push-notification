@@ -16,7 +16,7 @@ Add in composer.json:
 
 ```php
 require:{
-        "codificar/push-notification": "0.1.0",
+        "codificar/push-notification": "1.0.0",
 }
 ```
 
