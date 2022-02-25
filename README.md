@@ -1,6 +1,77 @@
 # push-notification
 Remote Push Notification for Android and iOS
 
+## Getting Started
+
+Add in composer.json:
+
+```php
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://libs:ofImhksJ@git.codificar.com.br/laravel-libs/push-notification.git"
+    }
+]
+```
+
+```php
+require:{
+        "codificar/push-notification": "1.0.0",
+}
+```
+
+```php
+"autoload": {
+    "psr-4": {
+        "Codificar\\PushNotification\\": "vendor/codificar/push-notification/src/"
+    }
+}
+```
+Update project dependencies:
+
+```shell
+$ composer update
+```
+
+Register the service provider in `config/app.php`:
+
+```php
+'providers' => [
+  /*
+   * Package Service Providers...
+   */
+  Codificar\PushNotification\PushNotificationServiceProvider::class,
+],
+```
+
+
+Check if has the laravel publishes in composer.json with public_vuejs_libs tag:
+
+```
+    "scripts": {
+        //...
+		"post-autoload-dump": [
+			"@php artisan vendor:publish --tag=public_vuejs_libs --force"
+		]
+	},
+```
+
+Or publish by yourself
+
+
+Publish Js Libs and Tests:
+
+```shell
+$ php artisan vendor:publish --tag=public_vuejs_libs --force
+```
+
+- Migrate the database tables
+
+```shell
+php artisan migrate
+```
+
+
 ## Configuração no iOS 
 ### Fluxo do APNS (Apple Push Notification Service)
 ![alt text](https://git.codificar.com.br/laravel-libs/push-notification/raw/master/img/authtoken.png)
