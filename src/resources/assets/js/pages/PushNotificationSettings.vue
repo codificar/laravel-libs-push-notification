@@ -245,7 +245,7 @@ export default {
           <br>
           <div class="row">
             <div class="col-lg-12">
-              <div v-if="AudioPushUrl">
+              <div>
                 <p>Arquivo de Áudio já foi enviado</p>
                 <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
                 <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
