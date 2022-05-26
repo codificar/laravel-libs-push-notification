@@ -107,6 +107,7 @@ export default {
 
 		  if(this.audioUrl) {
             formData.append('audio_url', this.audioUrl);
+            formData.append('audio_beep_url', this.audioUrl);
           }
 
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
