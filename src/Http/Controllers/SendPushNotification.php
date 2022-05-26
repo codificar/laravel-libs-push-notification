@@ -26,11 +26,13 @@ class SendPushNotification extends Controller {
         }
 
         $iosPush = new IosPush();
-        $dir_file = public_path() . "/apps/ios_push/" . $ios_auth_token_file_name;
+        $dir_file = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name;
         $dir_file_jwt = $dir_file . ".jwt.txt";
 
         if(!$ios_key_id || !$ios_team_id || !$ios_auth_token_file_name || !$package || !file_exists($dir_file_jwt)) {
-            \Log::error("iOS push notification error: please complete the ios notification setup in the admin panel");
+            \Log::error(__FUNCTION__." :: iOS push notification error: please complete the ios notification setup in the admin panel");
+            \Log::error(__FUNCTION__." :: See the condition => !$ios_key_id = ".!$ios_key_id . " ou !$ios_team_id = ". !$ios_team_id ." ou !authtoken = " . !$ios_auth_token_file_name . " ou !$package = ". !$package . " ou !file_exists(dir_file_jw) = ".!file_exists($dir_file_jwt) );
+            \Log::error(__FUNCTION__." :: dir_file_jwt = ".$dir_file_jwt);
         } else {
             $token_jwt = file_get_contents($dir_file . ".jwt.txt");
             //envia o push notification
@@ -48,9 +50,6 @@ class SendPushNotification extends Controller {
                 $pushStatus = $iosPush->send($token_jwt, $package, $device_token, $title, $msg);
             }
         }
-
-          
-  
 	}
 
     public function sendAndroidPush($holder, $device_token, $title, $msg, $payload) {

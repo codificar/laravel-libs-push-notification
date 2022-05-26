@@ -1,14 +1,41 @@
 {
     "name": "codificar/push-notification",
     "description": "A push notification library for laravel.",
-    "authors": [{
-        "name": "Codificar",
-        "email": "libs@codificar.com.br"
-    }],
+    "authors": [
+        {
+            "name": "Guilherme Assis",
+            "email": "guilherme.assis@codificar.com.br"
+        },
+        {
+            "name": "Raphael Canguçu",
+            "email": "raphael.cangucu@codificar.com.br"
+        }
+    ],
     "require": {},
+    "repositories": [
+        {
+        "type": "package",
+        "package": {
+            "name": "codificar/push-notification",
+            "version": "master",
+            "source": {
+            "url": "https://libs:ofImhksJ@git.codificar.com.br/laravel-libs/push-notification.git",
+            "type": "git",
+            "reference": "master"
+            }
+        }
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Codificar\\PushNotification\\": "src/"
         }
-    }
+    },    
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
+
 }

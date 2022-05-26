@@ -23,7 +23,7 @@ use Settings;
 
 class PushNotificationController extends Controller {
 
-	public function getPushNotificationSettings(){		
+	public function getPushNotificationSettings(){
 
 		$ios_key_id = Settings::findByKey('ios_key_id');
 		$ios_team_id = Settings::findByKey('ios_team_id');
@@ -32,11 +32,12 @@ class PushNotificationController extends Controller {
 		$ios_auth_token_file_name = Settings::findByKey('ios_auth_token_file_name');
 		$gcm_browser_key = Settings::findByKey('gcm_browser_key');
 		$audio_push_url = Settings::findByKey('audio_push');
+		$audio_url = Settings::findByKey('audio_url');
 		$audio_push_cancellation = Settings::findByKey('audio_push_cancellation');
 
 		$ios_p8url = null;
 		if($ios_auth_token_file_name) {
-			$ios_p8url = asset_url() . "/apps/ios_push/" . $ios_auth_token_file_name . ".p8";
+			$ios_p8url = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name . ".p8";
 		}
 		return View::make('push_notification::settings')
 					->with('ios_p8url', $ios_p8url)
@@ -46,6 +47,7 @@ class PushNotificationController extends Controller {
 					->with('package_provider', $ios_package_provider)
 					->with('gcm_browser_key', $gcm_browser_key)
 					->with('audio_push_url', $audio_push_url)
+					->with('audio_url', $audio_url)
 					->with('audio_push_cancellation', $audio_push_cancellation);
 	}
 
@@ -70,24 +72,24 @@ class PushNotificationController extends Controller {
 					$ios_auth_token_file_name = sha1(time() . rand());
 					$this->updateSetting('ios_auth_token_file_name', $ios_auth_token_file_name);  // o nome do arquivo precisa ser aleatorio. Se fosse nome fixo, qualquer usuario poderia acessar o arquivo no navegador, pois esta salvo na pasta public
 				}
-				$file_path = public_path() . "/apps/ios_push/";
+				$file_path = storage_path() . "/app/ios_push/";
 				$dir_file = $file_path . $ios_auth_token_file_name;
 
 				//check if path apps existis (the function file_exists check path too)
-				if (!file_exists(public_path() . "/apps")) {
-					mkdir(public_path() . "/apps", 0777, true);
+				if (!file_exists(storage_path() . "/app")) {
+					mkdir(storage_path() . "/app", 0777, true);
 				}
-				if (!file_exists(public_path() . "/apps/ios_push")) {
-					mkdir(public_path() . "/apps/ios_push", 0777, true);
+				if (!file_exists(storage_path() . "/app/ios_push")) {
+					mkdir(storage_path() . "/app/ios_push", 0777, true);
 				}
 
 
 				$p8_file_upload->move($file_path, $ios_auth_token_file_name . ".p8");
-				
+
 
 				//convert p8 to pem file. the command is: openssl pkcs8 -nocrypt -in file.p8 -out file.pem
-				exec("openssl pkcs8 -nocrypt -in " .$dir_file . ".p8" . " -out " .$dir_file . ".pem");				
-				
+				exec("openssl pkcs8 -nocrypt -in " .$dir_file . ".p8" . " -out " .$dir_file . ".pem");
+
 				//cria o token jwt para enviar os push notifications
 				$iosPush = new IosPush();
 				$private_key_pem_str = "file://" . $dir_file . ".pem";
@@ -98,7 +100,7 @@ class PushNotificationController extends Controller {
                 fclose($fp);
 			}
 		}
-        
+
 		// Return data
 		$data = array(
 			"success" => true,
@@ -106,7 +108,7 @@ class PushNotificationController extends Controller {
 		);
 
 		return new SaveSettingsResource($data);
-			
+
 	}
 
 
@@ -117,7 +119,8 @@ class PushNotificationController extends Controller {
 
 		$this->saveAudioCancellationPush();
 		$this->addAudioPush();
-        
+		$this->saveAudioAlert();
+
 		// Return data
 		$data = array(
 			"success" => true,
@@ -125,7 +128,31 @@ class PushNotificationController extends Controller {
 		);
 
 		return new SaveSettingsResource($data);
-			
+
+	}
+
+	protected function saveAudioAlert() {
+		if(Input::hasFile('audio_url')) {
+
+			// Upload File
+			$file = Input::file('audio_url');
+			$file_name = Str::random(10);
+			$ext  = $file->getClientOriginalExtension();
+			$size = round( $file->getSize() / 1000 );
+
+			if($ext == "mp3" && $size < 100) {
+				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+				$local_url = $file_name . "." . $ext;
+
+				// salva no s3 se for o caso
+				upload_to_s3($file_name, $local_url);
+
+				$audio_url = asset_url() . '/uploads/audio//' . $local_url;
+
+				///salvar url no banco de dados.
+				Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_url]);
+			}
+		}
 	}
 
 	protected function saveAudioCancellationPush() {
@@ -138,13 +165,13 @@ class PushNotificationController extends Controller {
 			$size = round( $file->getSize() / 1000 );
 
 			if($ext == "mp3" && $size < 100) {
-				$file->move(public_path() . "/apps/audio", $file_name . "." . $ext);
+				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
 				$local_url = $file_name . "." . $ext;
 
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/apps/audio/' . $local_url;
+				$audio_url = asset_url() . '/uploads/audio/' . $local_url;
 
 				///salvar url no banco de dados.
 				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_url]);
@@ -163,14 +190,14 @@ class PushNotificationController extends Controller {
 			$size = round( $file->getSize() / 1000 );
 
 			if ($ext == "mp3" && $size < 100) {
-				
-				$file->move(public_path() . "/apps/audio", $file_name . "." . $ext);
+
+				$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
 				$local_url = $file_name . "." . $ext;
 
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/apps/audio/' . $local_url;
+				$audio_url = asset_url() . "/uploads/audio//" . $local_url;
 
 				///salvar url no banco de dados.
 
@@ -182,7 +209,7 @@ class PushNotificationController extends Controller {
 		}
 
 	}
-	
+
 
 	private function updateSetting($key, $value) {
 		Settings::where('key', $key)->first()->update(['value' => $value]);

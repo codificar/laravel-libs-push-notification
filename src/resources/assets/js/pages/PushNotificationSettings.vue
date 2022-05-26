@@ -1,8 +1,7 @@
 <script>
 import axios from "axios";
-import moment from "moment";
 export default {
-  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl"],
+  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl"],
   data() {
     return {
       ios_key_id: '',
@@ -11,10 +10,12 @@ export default {
       package_provider: '',
       p8FileUpload: '',
       audioPush: '',
+      audioUrl: '',
       audioCancelPush: '',
       gcm_browser_key: '',
       show_upload_btn_p8: false,
       show_upload_btn_audio_push: false,
+      show_upload_btn_audio_url: false,
       show_upload_btn_audio_push_cancel: false
     };
   },
@@ -24,6 +25,9 @@ export default {
     },
     handleFileUploadAudio: function(id) {
       this.audioPush = this.$refs.myFilesAudio.files[0];
+    },
+    handleFileUploadAudioUrl: function(id) {
+      this.audioUrl = this.$refs.myFilesAudioUrl.files[0];
     },
     handleFileUploadAudioCancel: function(id) {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
@@ -53,7 +57,7 @@ export default {
           if(this.p8FileUpload) {
             formData.append('p8_file_upload', this.p8FileUpload);
           }
-          
+
           axios.post('/admin/libs/push_notification/save_settings/ios', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -92,7 +96,7 @@ export default {
 
           let formData = new FormData();
           formData.append('gcm_browser_key', this.gcm_browser_key);
-      
+
           if(this.audioCancelPush) {
             formData.append('audio_push_cancellation', this.audioCancelPush);
           }
@@ -100,7 +104,11 @@ export default {
           if(this.audioPush) {
             formData.append('audio_push', this.audioPush);
           }
-          
+
+		  if(this.audioUrl) {
+            formData.append('audio_url', this.audioUrl);
+          }
+
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -133,7 +141,7 @@ export default {
     this.ios_team_id = this.IosTeamId;
     this.package_user = this.PackageUser;
     this.package_provider = this.PackageProvider;
-    
+
     this.gcm_browser_key = this.GcmBrowserKey;
     //if hasn't a file uploaded, so show upload button
     if(!this.IosP8url) {
@@ -194,11 +202,11 @@ export default {
               <br>
               <form v-if="show_upload_btn_p8" id="modalFormRet">
                 <label for="confirm_withdraw_picture">Envie a chave privada .p8</label>
-                <input 
-                  type="file" 
-                  :id="'file'" 
-                  :ref="'myFiles'" 
-                  class="form-control-file" 
+                <input
+                  type="file"
+                  :id="'file'"
+                  :ref="'myFiles'"
+                  class="form-control-file"
                   @change="handleFileUpload"
                 >
                 <br>
@@ -232,7 +240,7 @@ export default {
               <label>{{ trans('notification.gcm_browser_key') }} *</label>
               <input v-model="gcm_browser_key" type="text" class="form-control">
             </div>
-          </div>         
+          </div>
           <br>
           <div class="row">
             <div class="col-lg-12">
@@ -242,14 +250,33 @@ export default {
                 <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
               </div>
               <br>
-              <form v-if="show_upload_btn_audio_push" id="modalFormRet">
+              <form v-if="show_upload_btn_audio_push" id="modalFormRetPush">
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</label>
-                <input 
-                  type="file" 
-                  :id="'file'" 
-                  :ref="'myFilesAudio'" 
-                  class="form-control-file" 
+                <input
+                  type="file"
+                  :id="'file'"
+                  :ref="'myFilesAudio'"
+                  class="form-control-file"
                   @change="handleFileUploadAudio"
+                >
+                <br>
+              </form>
+            </div>
+			<div class="col-lg-12">
+              <div v-if="AudioUrl">
+                <p>Arquivo de Áudio url já foi enviado</p>
+                <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
+                <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+              </div>
+              <br>
+              <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
+                <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
+                <input
+                  type="file"
+                  :id="'file'"
+                  :ref="'myFilesAudioUrl'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioUrl"
                 >
                 <br>
               </form>
@@ -261,13 +288,13 @@ export default {
                 <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
               </div>
               <br>
-              <form v-if="show_upload_btn_audio_push_cancel" id="modalFormRet">
+              <form v-if="show_upload_btn_audio_push_cancel" id="modalFormRetCancel">
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</label>
-                <input 
-                  type="file" 
-                  :id="'file'" 
-                  :ref="'myFilesAudioCancel'" 
-                  class="form-control-file" 
+                <input
+                  type="file"
+                  :id="'file'"
+                  :ref="'myFilesAudioCancel'"
+                  class="form-control-file"
                   @change="handleFileUploadAudioCancel"
                 >
                 <br>
