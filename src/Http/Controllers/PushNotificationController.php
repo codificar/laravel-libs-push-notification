@@ -214,10 +214,7 @@ class PushNotificationController extends Controller {
 				$audio_beep_url = asset_url() . "/uploads/audio//" . $local_url;
 
 				///salvar url no banco de dados.
-
-				$settings = Settings::where('key', 'audio_push')->first();
-				$settings->value = $audio_beep_url;
-				$settings->save();
+				Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_beep_url]);
 
 			}
 		}
