@@ -18,7 +18,8 @@ return array(
 	'no'							=> 'Não',
 	'save_android_settings'			=> 'Salvar configurações Android',
 	'gcm_browser_key'    			=> 'Chave de Navegação GCM',
-	'audio_push'					=> 'Arquivo de Áudio',
+	'audio_push'					=> 'Áudio de notificação push do Android',
 	'audio_push_cancellation'		=> 'Áudio de cancelamento de corrida',
-	"audio_url"						=> 'Áudio beep da corrida'
+	"audio_url"						=> 'Áudio de beep da corrida',
+	"audio_uploaded"				=> 'Arquivo de áudio enviado',
 );
