@@ -1,7 +1,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl"],
+  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl", "AudioBeepUrl"],
   data() {
     return {
       ios_key_id: '',
@@ -107,6 +107,7 @@ export default {
 
 		  if(this.audioUrl) {
             formData.append('audio_url', this.audioUrl);
+            formData.append('audio_beep_url', this.audioUrl);
           }
 
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
@@ -243,17 +244,23 @@ export default {
           </div>
           <br>
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</h3>
               <div v-if="AudioPushUrl">
-                <p>Arquivo de Áudio já foi enviado</p>
-                <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioPushUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
-              <br>
               <form v-if="show_upload_btn_audio_push" id="modalFormRetPush">
-                <label for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudio'"
                   class="form-control-file"
@@ -262,17 +269,23 @@ export default {
                 <br>
               </form>
             </div>
-			<div class="col-lg-12">
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</h3>
               <div v-if="AudioUrl">
-                <p>Arquivo de Áudio url já foi enviado</p>
-                <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
-              <br>
               <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
-                <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudioUrl'"
                   class="form-control-file"
@@ -281,17 +294,23 @@ export default {
                 <br>
               </form>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</h3>
               <div v-if="AudioPushCancelUrl">
-                <p>Arquivo de Áudio do cancelamento já foi enviado</p>
-                <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioPushCancelUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
-              <br>
               <form v-if="show_upload_btn_audio_push_cancel" id="modalFormRetCancel">
-                <label for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudioCancel'"
                   class="form-control-file"
@@ -301,7 +320,7 @@ export default {
               </form>
             </div>
           </div>
-          <div class="form-group text-right">
+          <div class="form-group text-right save-android-container">
             <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
               <span
                 class="glyphicon glyphicon-floppy-disk"
@@ -319,5 +338,27 @@ export default {
 <style>
 .card-margin-top {
   margin-top: 30px !important;
+}
+
+.audio-container {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #DDD;
+  border-radius: 5px;
+  margin-top: 2px;
+}
+
+.save-android-container {
+  margin-top: 5px;
+}
+
+.container-options {
+  margin-bottom: 10px;
+}
+
+audio {
+  height: 33px;
 }
 </style>

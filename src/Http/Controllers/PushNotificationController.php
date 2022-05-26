@@ -32,13 +32,19 @@ class PushNotificationController extends Controller {
 		$ios_auth_token_file_name = Settings::findByKey('ios_auth_token_file_name');
 		$gcm_browser_key = Settings::findByKey('gcm_browser_key');
 		$audio_push_url = Settings::findByKey('audio_push');
-		$audio_url = Settings::findByKey('audio_url');
+		$audio_beep_url = Settings::findByKey('audio_beep_url');
+
+		if(!$audio_beep_url){
+			$audio_beep_url = Settings::findByKey('audio_url');
+			$audio_beep_url = $audio_beep_url->value ?? '';
+		}
 		$audio_push_cancellation = Settings::findByKey('audio_push_cancellation');
 
 		$ios_p8url = null;
 		if($ios_auth_token_file_name) {
 			$ios_p8url = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name . ".p8";
 		}
+		
 		return View::make('push_notification::settings')
 					->with('ios_p8url', $ios_p8url)
 					->with('ios_key_id', $ios_key_id)
@@ -47,7 +53,8 @@ class PushNotificationController extends Controller {
 					->with('package_provider', $ios_package_provider)
 					->with('gcm_browser_key', $gcm_browser_key)
 					->with('audio_push_url', $audio_push_url)
-					->with('audio_url', $audio_url)
+					->with('audio_beep_url', $audio_beep_url)
+					->with('audio_url', $audio_beep_url)
 					->with('audio_push_cancellation', $audio_push_cancellation);
 	}
 
@@ -132,10 +139,13 @@ class PushNotificationController extends Controller {
 	}
 
 	protected function saveAudioAlert() {
-		if(Input::hasFile('audio_url')) {
+		if(Input::hasFile('audio_url') || Input::hasFile('audio_beep_url')) {
 
 			// Upload File
 			$file = Input::file('audio_url');
+			if(Input::hasFile('audio_beep_url')) {
+				$file = Input::file('audio_beep_url');
+			}
 			$file_name = Str::random(10);
 			$ext  = $file->getClientOriginalExtension();
 			$size = round( $file->getSize() / 1000 );
@@ -147,10 +157,14 @@ class PushNotificationController extends Controller {
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/uploads/audio//' . $local_url;
+				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
 
 				///salvar url no banco de dados.
-				Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_url]);
+				if(Input::hasFile('audio_beep_url')) {
+					Settings::updateOrCreate(['key' => 'audio_beep_url'], ['key' => 'audio_beep_url', 'value' => $audio_beep_url]);
+				} else {
+					Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_beep_url]);
+				}
 			}
 		}
 	}
@@ -171,10 +185,10 @@ class PushNotificationController extends Controller {
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . '/uploads/audio/' . $local_url;
+				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
 
 				///salvar url no banco de dados.
-				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_url]);
+				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_beep_url]);
 			}
 		}
 
@@ -197,13 +211,10 @@ class PushNotificationController extends Controller {
 				// salva no s3 se for o caso
 				upload_to_s3($file_name, $local_url);
 
-				$audio_url = asset_url() . "/uploads/audio//" . $local_url;
+				$audio_beep_url = asset_url() . "/uploads/audio//" . $local_url;
 
 				///salvar url no banco de dados.
-
-				$settings = Settings::where('key', 'audio_push')->first();
-				$settings->value = $audio_url;
-				$settings->save();
+				Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_beep_url]);
 
 			}
 		}
