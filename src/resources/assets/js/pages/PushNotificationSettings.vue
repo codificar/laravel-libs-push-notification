@@ -349,6 +349,7 @@ export default {
   border-style: solid;
   border-color: #DDD;
   border-radius: 5px;
+  margin-top: 2px;
 }
 
 audio {
