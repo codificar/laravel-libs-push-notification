@@ -25,6 +25,7 @@
 			package-provider="{{ $package_provider }}"
 			gcm-browser-key="{{ $gcm_browser_key }}"
 			audio-push-url="{{ $audio_push_url }}"
+			audio-beep-url="{{ $audio_beep_url }}"
 			audio-url="{{ $audio_url }}"
 			audio-push-cancel-url="{{ $audio_push_cancellation }}"
 		>

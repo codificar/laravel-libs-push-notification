@@ -1,7 +1,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl"],
+  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl", "AudioBeepUrl"],
   data() {
     return {
       ios_key_id: '',
@@ -254,6 +254,7 @@ export default {
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudio'"
                   class="form-control-file"
@@ -263,22 +264,27 @@ export default {
               </form>
             </div>
 			<div class="col-lg-12">
-              <div v-if="AudioUrl">
-                <p>Arquivo de Áudio url já foi enviado</p>
-                <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
-              </div>
-              <br>
               <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudioUrl'"
                   class="form-control-file"
                   @change="handleFileUploadAudioUrl"
                 >
                 <br>
+                <div v-if="AudioUrl">
+                  <h6> Testar </h6>
+                  <audio controls id="ringSound">
+                      <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
+                      Seu navegador não tem suporte a reprodução de áudio.
+                  </audio>
+                  <p>Arquivo de Áudio url já foi enviado</p>
+                  <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+                </div>
               </form>
             </div>
             <div class="col-lg-12">
@@ -292,6 +298,7 @@ export default {
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</label>
                 <input
                   type="file"
+                  accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudioCancel'"
                   class="form-control-file"
