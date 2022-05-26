@@ -276,7 +276,7 @@ export default {
                   @change="handleFileUploadAudioUrl"
                 >
                 <br>
-                <div v-if="AudioUrl">
+                <div>
                   <h6> Testar </h6>
                   <audio controls id="ringSound">
                       <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
