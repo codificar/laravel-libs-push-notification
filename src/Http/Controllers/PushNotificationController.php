@@ -143,9 +143,8 @@ class PushNotificationController extends Controller {
 
 			// Upload File
 			$file = Input::file('audio_url');
-			if(Input::file('audio_beep_url')) {
+			if(Input::hasFile('audio_beep_url')) {
 				$file = Input::file('audio_beep_url');
-
 			}
 			$file_name = Str::random(10);
 			$ext  = $file->getClientOriginalExtension();
@@ -161,7 +160,7 @@ class PushNotificationController extends Controller {
 				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
 
 				///salvar url no banco de dados.
-				if(Input::file('audio_beep_url')) {
+				if(Input::hasFile('audio_beep_url')) {
 					Settings::updateOrCreate(['key' => 'audio_beep_url'], ['key' => 'audio_beep_url', 'value' => $audio_beep_url]);
 				} else {
 					Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_beep_url]);
