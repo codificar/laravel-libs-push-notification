@@ -14,16 +14,16 @@
     "require": {},
     "repositories": [
         {
-        "type": "package",
-        "package": {
-            "name": "codificar/push-notification",
-            "version": "master",
-            "source": {
-            "url": "https://libs:ofImhksJ@git.codificar.com.br/laravel-libs/push-notification.git",
-            "type": "git",
-            "reference": "master"
+            "type": "package",
+            "package": {
+                "name": "codificar/push-notification",
+                "version": "master",
+                "source": {
+                "url": "https://libs:ofImhksJ@git.codificar.com.br/laravel-libs/push-notification.git",
+                "type": "git",
+                "reference": "master"
+                }
             }
-        }
         }
     ],
     "autoload": {
