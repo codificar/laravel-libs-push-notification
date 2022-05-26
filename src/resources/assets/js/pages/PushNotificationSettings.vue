@@ -322,7 +322,7 @@ export default {
               </form>
             </div>
           </div>
-          <div class="form-group text-right">
+          <div class="form-group text-right save-android-container">
             <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
               <span
                 class="glyphicon glyphicon-floppy-disk"
@@ -350,6 +350,10 @@ export default {
   border-color: #DDD;
   border-radius: 5px;
   margin-top: 2px;
+}
+
+.save-android-container {
+  margin-top: 20px;
 }
 
 audio {
