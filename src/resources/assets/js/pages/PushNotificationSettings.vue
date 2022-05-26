@@ -245,15 +245,17 @@ export default {
           <br>
           <div class="row">
             <div class="col-lg-12 audio-container">
-              <label for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</label>
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</h3>
               <div v-if="AudioPushUrl">
                 <p>Arquivo de Áudio já foi enviado</p>
                 <audio controls id="ringSound">
                     <source od="ringSoundSource" :src="AudioPushUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
-                <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
+                <div>
+                  <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
               <br>
               <form v-if="show_upload_btn_audio_push" id="modalFormRetPush">
@@ -269,15 +271,17 @@ export default {
               </form>
             </div>
 			      <div class="col-lg-12 audio-container">
-              <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</h3>
               <div v-if="AudioUrl">
                 <p>Arquivo de Áudio url já foi enviado</p>
                 <audio controls id="ringSound">
                     <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
-                <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+                <div>
+                  <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
               <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
                 <input
@@ -292,15 +296,17 @@ export default {
               </form>
             </div>
             <div class="col-lg-12 audio-container">
-              <label for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</label>
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</h3>
               <div v-if="AudioPushCancelUrl">
                 <p>Arquivo de Áudio do cancelamento já foi enviado</p>
                 <audio controls id="ringSound">
                     <source od="ringSoundSource" :src="AudioPushCancelUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
-                <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
-                <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
+                <div>
+                  <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
+                </div>
               </div>
               <br>
               <form v-if="show_upload_btn_audio_push_cancel" id="modalFormRetCancel">
