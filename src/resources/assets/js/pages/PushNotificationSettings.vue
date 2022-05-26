@@ -245,7 +245,7 @@ export default {
           <br>
           <div class="row">
             <div class="col-lg-12">
-              <div>
+              <div v-if="AudioPushUrl">
                 <p>Arquivo de Áudio já foi enviado</p>
                 <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
                 <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
@@ -265,6 +265,7 @@ export default {
               </form>
             </div>
 			<div class="col-lg-12">
+        <p>{{AudioUrl}}</p>
               <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
                 <label for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</label>
                 <input
@@ -276,7 +277,7 @@ export default {
                   @change="handleFileUploadAudioUrl"
                 >
                 <br>
-                <div>
+                <div v-if="AudioUrl">
                   <h6> Testar </h6>
                   <audio controls id="ringSound">
                       <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
