@@ -32,8 +32,15 @@ class PushNotificationController extends Controller {
 		$ios_package_provider = Settings::findByKey('ios_package_provider');
 		$ios_auth_token_file_name = Settings::findByKey('ios_auth_token_file_name');
 		$gcm_browser_key = Settings::findByKey('gcm_browser_key');
+		
 		$audio_push_url = Settings::findByKey('audio_push');
 		$audio_beep_url = Settings::findByKey('audio_beep_url');
+		
+		$audio_new_ride = Settings::findByKey('audio_new_ride');
+		$audio_ride_cancelation = Settings::findByKey('audio_ride_cancelation');
+		$audio_push_notification = Settings::findByKey('audio_push_notification');
+
+		dd($audio_push_notification);
 
 		if(!$audio_beep_url){
 			$audio_beep_url = Settings::findByKey('audio_url');
@@ -56,7 +63,11 @@ class PushNotificationController extends Controller {
 					->with('audio_push_url', $audio_push_url)
 					->with('audio_beep_url', $audio_beep_url)
 					->with('audio_url', $audio_beep_url)
-					->with('audio_push_cancellation', $audio_push_cancellation);
+					->with('audio_push_cancellation', $audio_push_cancellation)
+
+					->with('audio_new_ride', $audio_new_ride)
+					->with('audio_ride_cancelation', $audio_ride_cancelation)
+					->with('audio_push_notification', $audio_push_notification);
 	}
 
     public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {

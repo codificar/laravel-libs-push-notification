@@ -9,7 +9,7 @@ export default {
     "PackageProvider", 
     "GcmBrowserKey", 
     "AudioNewRideUrl", 
-    "AudioRideCancelationUrl", 
+    "AudioRideCancellationUrl", 
     "AudioPushNotificationUrl"
   ],
   data() {
@@ -164,7 +164,7 @@ export default {
       this.showUpaloadAudioPushNotification = true;
     }
 
-    if(!this.AudioRideCancelationUrl) {
+    if(!this.AudioRideCancellationUrl) {
       this.showUpaloadAudioCancel = true;
     }
     
@@ -264,7 +264,7 @@ export default {
             <!--audio New Ride -->
             <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_new_ride') }}</h3>
-              <div v-if="audioPushNewRide">
+              <div v-if="AudioNewRideUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
                     <source od="ringSoundSource" :src="AudioNewRideUrl" type="audio/x-wav; audio/x-mp3;" />
