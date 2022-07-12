@@ -39,13 +39,7 @@ class PushNotificationController extends Controller {
 		$audio_new_ride = Settings::findByKey('audio_new_ride');
 		$audio_ride_cancelation = Settings::findByKey('audio_ride_cancelation');
 		$audio_push_notification = Settings::findByKey('audio_push_notification');
-
-		/*dd(
-			$audio_new_ride,
-			$audio_ride_cancelation,
-			$audio_push_notification
-		);*/
-
+		
 		if(!$audio_beep_url){
 			$audio_beep_url = Settings::findByKey('audio_url');
 			$audio_beep_url = $audio_beep_url->value ?? '';
