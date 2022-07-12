@@ -32,6 +32,7 @@
 			audio-new-ride-url="{{ $audio_new_ride }}"
 			audio-ride-cancellation-url="{{ $audio_ride_cancelation }}"
 			audio-push-notification-url="{{ $audio_push_notification }}"
+			
 		>
 		</settingsnotification>
 
