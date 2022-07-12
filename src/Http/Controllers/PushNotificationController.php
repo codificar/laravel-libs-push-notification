@@ -39,6 +39,8 @@ class PushNotificationController extends Controller {
 		$audio_new_ride = Settings::findByKey('audio_new_ride');
 		$audio_ride_cancelation = Settings::findByKey('audio_ride_cancelation');
 		$audio_push_notification = Settings::findByKey('audio_push_notification');
+		$audio_msg_provider = Settings::findByKey('audio_chat_provider_notification');
+		$audio_msg_user = Settings::findByKey('audio_chat_user_notification');
 		
 		if(!$audio_beep_url){
 			$audio_beep_url = Settings::findByKey('audio_url');
@@ -65,7 +67,9 @@ class PushNotificationController extends Controller {
 
 					->with('audio_new_ride', $audio_new_ride)
 					->with('audio_ride_cancelation', $audio_ride_cancelation)
-					->with('audio_push_notification', $audio_push_notification);
+					->with('audio_push_notification', $audio_push_notification)
+					->with('audio_msg_provider', $audio_msg_provider)
+					->with('audio_msg_user', $audio_msg_user);
 	}
 
     public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {

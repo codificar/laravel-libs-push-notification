@@ -10,7 +10,9 @@ export default {
     "GcmBrowserKey", 
     "AudioNewRideUrl", 
     "AudioRideCancellationUrl", 
-    "AudioPushNotificationUrl"
+    "AudioPushNotificationUrl",
+    "AudioMsgProviderNotificationUrl",
+    "AudioMsgUserNotificationUrl"
   ],
   data() {
     return {
@@ -22,11 +24,16 @@ export default {
       audioPushNewRide: '',
       audioCancelPush: '',
       audioPushNotify: '',
+      audioMsgProvider: '',
+      audioMsgUser: '',
       gcm_browser_key: '',
       show_upload_btn_p8: false,
       showUpaloadAudioNewRide: false,
       showUpaloadAudioCancel: false,
-      showUpaloadAudioPushNotification: false
+      showUpaloadAudioPushNotification: false,
+
+      showUpaloadAudioMsgProviderNotification: false,
+      showUpaloadAudioMsgUserNotification: false
     };
   },
   methods: {
@@ -41,6 +48,12 @@ export default {
     },
     handleFileUploadAudioPushNotify: function(id) {
       this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
+    },
+    handleFileUploadAudioChatProvider: function(id) {
+      this.audioMsgProvider = this.$refs.myFilesAudioCahtProvider.files[0];
+    },
+    handleFileUploadAudioChatUser: function(id) {
+      this.audioMsgUser = this.$refs.myFilesAudioCahtUser.files[0];
     },
     showErrorMsg(msg) {
       this.$swal({
@@ -121,6 +134,14 @@ export default {
             formData.append('audio_push_notification', this.audioPushNotify);
           }
 
+		      if(this.audioMsgProvider) {
+            formData.append('audio_msg_provider', this.audioMsgProvider);
+          }
+
+		      if(this.audioMsgUser) {
+            formData.append('audio_msg_user', this.audioMsgUser);
+          }
+
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -170,6 +191,14 @@ export default {
 
     if(!this.AudioPushNotificationUrl) {
       this.showUpaloadAudioPushNotification = true;
+    }
+    
+    if(!this.AudioMsgProviderNotificationUrl) {
+      this.showUpaloadAudioMsgProviderNotification = true;
+    }
+
+    if(!this.AudioMsgUserNotificationUrl) {
+      this.showUpaloadAudioMsgUserNotification = true;
     }
   },
 };
@@ -338,6 +367,60 @@ export default {
                   :ref="'myFilesAudioPushNotify'"
                   class="form-control-file"
                   @change="handleFileUploadAudioPushNotify"
+                >
+                <br>
+              </form>
+            </div>
+
+            <!--audio Chat Msg Provider Notify -->
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
+              <div v-if="AudioMsgProviderNotificationUrl">
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioMsgProviderNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioMsgProviderNotificationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgProviderNotification = true">{{ 'Trocar' }}</a>
+                </div>
+              </div>
+              <form v-if="showUpaloadAudioMsgProviderNotification" id="modalFormRetUrl">
+                <input
+                  type="file"
+                  accept="audio/mp3"
+                  :id="'file'"
+                  :ref="'myFilesAudioCahtProvider'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioChatProvider"
+                >
+                <br>
+              </form>
+            </div>
+
+            <!--audio Chat Msg User Notify -->
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
+              <div v-if="AudioMsgUserNotificationUrl">
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioMsgUserNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioMsgUserNotificationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgUserNotification = true">{{ 'Trocar' }}</a>
+                </div>
+              </div>
+              <form v-if="showUpaloadAudioMsgUserNotification" id="modalFormRetUrl">
+                <input
+                  type="file"
+                  accept="audio/mp3"
+                  :id="'file'"
+                  :ref="'myFilesAudioCahtUser'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioChatUser"
                 >
                 <br>
               </form>
