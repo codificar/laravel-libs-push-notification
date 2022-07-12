@@ -4,6 +4,7 @@ return array(
 	'user' 							=> 'Usuario',
 	'provider' 						=> 'Conductor',
 	'push_settings'					=> 'Configuración de notificaciones push',
+	'chat_settings'					=> 'Configuración de notificaciones chat',
 	'home'							=> 'Casa',
 	'push_notification'				=> 'Notificaciones push',
 	'ios_settings'					=> 'Configuración de iOS',

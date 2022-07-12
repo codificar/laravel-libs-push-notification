@@ -168,6 +168,50 @@ export default {
         }
       });
     },
+    confirmSaveChatSettings() {
+      this.$swal({
+        title: this.trans('notification.save_chat_settings'),
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonText: this.trans('notification.yes'),
+        cancelButtonText: this.trans('notification.no')
+      }).then((result) => {
+        if (result.value) {
+
+		      if(this.audioMsgProvider) {
+            formData.append('audio_msg_provider', this.audioMsgProvider);
+          }
+
+		      if(this.audioMsgUser) {
+            formData.append('audio_msg_user', this.audioMsgUser);
+          }
+
+          axios.post('/admin/libs/push_notification/save_settings/chat', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then(response => {
+            console.log("resoponse", response);
+            if(response.data.success) {
+              this.$swal({
+                title: this.trans('notification.settings_saved'),
+                type: 'success'
+              });
+            } else {
+              if(response.data.errors && response.data.errors [0]) {
+                this.showErrorMsg(response.data.errors[0]);
+              } else {
+                this.showErrorMsg("Error");
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.showErrorMsg("Error");
+          });
+        }
+      });
+    },
   },
   created() {
     this.ios_key_id = this.IosKeyId;
@@ -370,30 +414,7 @@ export default {
                 <br>
               </form>
             </div>
-          </div>
-        </div>
-        <div class="form-group text-right save-android-container">
-          <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
-            <span
-              class="glyphicon glyphicon-floppy-disk"
-              aria-hidden="true"
-            ></span>
-            {{ trans("notification.save_android_settings") }}
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div class="card-margin-top">
-      <div class="card-outline-info">
-        <div class="card-header">
-          <h4 class="m-b-0 text-white">
-            {{ trans("notification.chat_settings") }}
-          </h4>
-        </div>
-
-        <div class="row">
-          <div class="card-block">
             <!--audio Chat Msg Provider Notify -->
 			      <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
@@ -451,6 +472,82 @@ export default {
           </div>
           <div class="form-group text-right save-android-container">
             <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
+              <span
+                class="glyphicon glyphicon-floppy-disk"
+                aria-hidden="true"
+              ></span>
+              {{ trans("notification.save_android_settings") }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-margin-top">
+      <div class="card-outline-info">
+        <div class="card-header">
+          <h4 class="m-b-0 text-white">
+            {{ trans("notification.chat_settings") }}
+          </h4>
+        </div>
+        <div class="card-block">          
+          <div class="row">
+            <!--audio Chat Msg Provider Notify -->
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
+              <div v-if="AudioMsgProviderNotificationUrl">
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioMsgProviderNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioMsgProviderNotificationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgProviderNotification = true">{{ 'Trocar' }}</a>
+                </div>
+              </div>
+              <form v-if="showUpaloadAudioMsgProviderNotification" id="modalFormRetUrl">
+                <input
+                  type="file"
+                  accept="audio/mp3"
+                  :id="'file'"
+                  :ref="'myFilesAudioCahtProvider'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioChatProvider"
+                >
+                <br>
+              </form>
+            </div>
+
+            <!--audio Chat Msg User Notify -->
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
+              <div v-if="AudioMsgUserNotificationUrl">
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioMsgUserNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioMsgUserNotificationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgUserNotification = true">{{ 'Trocar' }}</a>
+                </div>
+              </div>
+              <form v-if="showUpaloadAudioMsgUserNotification" id="modalFormRetUrl">
+                <input
+                  type="file"
+                  accept="audio/mp3"
+                  :id="'file'"
+                  :ref="'myFilesAudioCahtUser'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioChatUser"
+                >
+                <br>
+              </form>
+            </div>
+
+          </div>
+          <div class="form-group text-right save-android-container">
+            <button v-on:click="confirmSaveChatSettings()" class="btn btn-success">
               <span
                 class="glyphicon glyphicon-floppy-disk"
                 aria-hidden="true"

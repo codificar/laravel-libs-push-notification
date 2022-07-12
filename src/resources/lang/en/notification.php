@@ -4,6 +4,7 @@ return array(
 	'user' 							=> 'User',
 	'provider' 						=> 'Driver',
 	'push_settings'					=> 'Push Notification Setting',
+	'chat_settings'					=> 'Chat Notification Setting',
 	'home'							=> 'Home',
 	'push_notification'				=> 'Push Notifications',
 	'ios_settings'					=> 'iOS Settings',
