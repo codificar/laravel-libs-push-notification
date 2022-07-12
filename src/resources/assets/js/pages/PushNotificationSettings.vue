@@ -291,7 +291,7 @@ export default {
           <div class="row">
 
             <!--audio New Ride -->
-            <div class="col-lg-12 audio-container">
+            <div class="col-lg-4 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_new_ride') }}</h3>
               <div v-if="AudioNewRideUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -319,7 +319,7 @@ export default {
 
 
             <!--audio Ride Cancelation -->
-            <div class="col-lg-12 audio-container">
+            <div class="col-lg-4 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_cancellation_ride') }}</h3>
               <div v-if="AudioRideCancellationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -346,7 +346,7 @@ export default {
             </div>
 
             <!--audio Push Notify -->
-			      <div class="col-lg-12 audio-container">
+			      <div class="col-lg-4 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_notify') }}</h3>
               <div v-if="AudioPushNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -373,7 +373,7 @@ export default {
             </div>
 
             <!--audio Chat Msg Provider Notify -->
-			      <div class="col-lg-12 audio-container">
+			      <div class="col-lg-6 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
               <div v-if="AudioMsgProviderNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -400,7 +400,7 @@ export default {
             </div>
 
             <!--audio Chat Msg User Notify -->
-			      <div class="col-lg-12 audio-container">
+			      <div class="col-lg-6 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
               <div v-if="AudioMsgUserNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
