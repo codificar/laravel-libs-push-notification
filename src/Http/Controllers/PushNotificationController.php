@@ -100,7 +100,6 @@ class PushNotificationController extends Controller {
 					mkdir(storage_path() . "/app/ios_push", 0777, true);
 				}
 
-
 				$p8_file_upload->move($file_path, $ios_auth_token_file_name . ".p8");
 
 
