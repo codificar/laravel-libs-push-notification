@@ -160,16 +160,16 @@ export default {
       this.show_upload_btn_p8 = true;
     }
 
-    if(!this.AudioPushNotificationUrl) {
-      this.showUpaloadAudioPushNotification = true;
-    }
-
     if(!this.AudioRideCancellationUrl) {
       this.showUpaloadAudioCancel = true;
     }
     
     if(!this.AudioNewRideUrl) {
       this.showUpaloadAudioNewRide = true;
+    }
+
+    if(!this.AudioPushNotificationUrl) {
+      this.showUpaloadAudioPushNotification = true;
     }
   },
 };
@@ -292,14 +292,14 @@ export default {
             <!--audio Ride Cancelation -->
             <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_cancellation_ride') }}</h3>
-              <div v-if="AudioPushCancelUrl">
+              <div v-if="AudioRideCancellationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioPushCancelUrl" type="audio/x-wav; audio/x-mp3;" />
+                    <source od="ringSoundSource" :src="AudioRideCancellationUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" :href="AudioRideCancellationUrl" download>{{ 'Baixar' }}</a>
                   <a class="btn btn-secondary" @click="showUpaloadAudioCancel = true">{{ 'Trocar' }}</a>
                 </div>
               </div>
@@ -319,18 +319,18 @@ export default {
             <!--audio Push Notify -->
 			      <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_notify') }}</h3>
-              <div v-if="audioPushNotify">
+              <div v-if="AudioPushNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="audioPushNotify" type="audio/x-wav; audio/x-mp3;" />
+                    <source od="ringSoundSource" :src="AudioPushNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
-                  <a class="btn btn-secondary" :href="audioPushNotify" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" :href="AudioPushNotificationUrl" download>{{ 'Baixar' }}</a>
                   <a class="btn btn-secondary" @click="showUpaloadAudioPushNotification = true">{{ 'Trocar' }}</a>
                 </div>
               </div>
-              <form v-if="showUpaloadAudioPushNotification || !audioPushNotify" id="modalFormRetUrl">
+              <form v-if="showUpaloadAudioPushNotification" id="modalFormRetUrl">
                 <input
                   type="file"
                   accept="audio/mp3"
