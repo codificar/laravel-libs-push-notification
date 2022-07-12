@@ -145,12 +145,6 @@ class PushNotificationController extends Controller {
 		$audioNewRide = $this->saveAudioNewRide();
 		$audioCancellationRide = $this->saveAudioCancellationRide();
 		$audioPushNotify = $this->addAudioPushNotify();
-
-		dd(
-			$audioNewRide,
-			$audioCancellationRide,
-			$audioPushNotify
-		);
 		
 		if(!$audioNewRide['success']) {
 			$errors[] = $audioNewRide['error'];
@@ -188,7 +182,6 @@ class PushNotificationController extends Controller {
 			try {
 				// Upload File
 				$file = Input::file('audio_new_ride');
-				dd($file);
 				$file_name = 'new_ride_' . Str::random(10);
 				$ext  = $file->getClientOriginalExtension();
 				$size = round( $file->getSize() / 1000 );
@@ -219,12 +212,10 @@ class PushNotificationController extends Controller {
 	}
 
 	protected function saveAudioCancellationRide() {
-		dd(Input::hasFile('audio_ride_cancelation'));
 		if(Input::hasFile('audio_ride_cancelation')) {
 			try {
 				// Upload File
 				$file = Input::file('audio_ride_cancelation');
-				$file = Input::file('audio_push_cancellation');
 				$file_name = 'ride_cancelation_' . Str::random(10);
 				$ext  = $file->getClientOriginalExtension();
 				$size = round( $file->getSize() / 1000 );
