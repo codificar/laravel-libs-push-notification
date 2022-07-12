@@ -20,5 +20,9 @@ return array(
 	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
 	'audio_push'					=> 'Archivo de audio',
 	'audio_push_cancellation'		=> 'Carrera cancelar audio',
-	"audio_url"						=> 'Audio Url'
+	"audio_url"						=> 'Audio Url',
+
+	'audio_new_ride'				=> 'Sonido de carrera nueva',
+	'audio_cancellation_ride'		=> 'Sonido de carrera cancelada',
+	'audio_push_notify'				=> 'Sonido de notificación push',
 );

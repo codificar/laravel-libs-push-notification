@@ -20,5 +20,9 @@ return array(
 	'gcm_browser_key'    			=> 'GCM Browser Key',
 	'audio_push'					=> 'Audio File',
 	'audio_push_cancellation'		=> 'Audio Cancel File',
-	"audio_url"						=> 'Audio Url'
+	"audio_url"						=> 'Audio Url',
+
+	'audio_new_ride'				=> 'Beep New Ride',
+	'audio_cancellation_ride'		=> 'Beep Cancel Ride',
+	'audio_push_notify'				=> 'Beep Push Notify',
 );
