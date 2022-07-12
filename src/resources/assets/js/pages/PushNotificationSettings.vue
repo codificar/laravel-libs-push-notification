@@ -291,7 +291,7 @@ export default {
           <div class="row">
 
             <!--audio New Ride -->
-            <div class="col-lg-4 audio-container">
+            <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_new_ride') }}</h3>
               <div v-if="AudioNewRideUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -318,7 +318,7 @@ export default {
             </div>
 
             <!--audio Ride Cancelation -->
-            <div class="col-lg-4 audio-container">
+            <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_cancellation_ride') }}</h3>
               <div v-if="AudioRideCancellationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -345,7 +345,7 @@ export default {
             </div>
 
             <!--audio Push Notify -->
-			      <div class="col-lg-4 audio-container">
+			      <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_notify') }}</h3>
               <div v-if="AudioPushNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -370,9 +370,32 @@ export default {
                 <br>
               </form>
             </div>
+          </div>
+        </div>
+        <div class="form-group text-right save-android-container">
+          <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
+            <span
+              class="glyphicon glyphicon-floppy-disk"
+              aria-hidden="true"
+            ></span>
+            {{ trans("notification.save_android_settings") }}
+          </button>
+        </div>
+      </div>
+    </div>
 
+    <div class="card-margin-top">
+      <div class="card-outline-info">
+        <div class="card-header">
+          <h4 class="m-b-0 text-white">
+            {{ trans("notification.chat_settings") }}
+          </h4>
+        </div>
+
+        <div class="row">
+          <div class="card-block">
             <!--audio Chat Msg Provider Notify -->
-			      <div class="col-lg-6 audio-container">
+			      <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
               <div v-if="AudioMsgProviderNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -399,7 +422,7 @@ export default {
             </div>
 
             <!--audio Chat Msg User Notify -->
-			      <div class="col-lg-6 audio-container">
+			      <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
               <div v-if="AudioMsgUserNotificationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
@@ -432,7 +455,7 @@ export default {
                 class="glyphicon glyphicon-floppy-disk"
                 aria-hidden="true"
               ></span>
-              {{ trans("notification.save_android_settings") }}
+              {{ trans("notification.save_chat_settings") }}
             </button>
           </div>
         </div>
