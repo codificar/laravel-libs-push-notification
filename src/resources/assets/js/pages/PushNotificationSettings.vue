@@ -317,7 +317,6 @@ export default {
               </form>
             </div>
 
-
             <!--audio Ride Cancelation -->
             <div class="col-lg-4 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_cancellation_ride') }}</h3>
