@@ -25,4 +25,6 @@ return array(
 	'audio_new_ride'				=> 'Beep New Ride',
 	'audio_cancellation_ride'		=> 'Beep Cancel Ride',
 	'audio_push_notify'				=> 'Beep Push Notify',
+	'audio_chat_provider'			=> 'Beep Chat Provider',
+	'audio_chat_user'				=> 'Beep Chat User',
 );

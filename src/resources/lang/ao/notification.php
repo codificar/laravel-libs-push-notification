@@ -25,5 +25,7 @@ return array(
 	'audio_new_ride'				=> 'Beep de nova corrida',
 	'audio_cancellation_ride'		=> 'Beep de cancelamento de corrida',
 	'audio_push_notify'				=> 'Beep de notificação push',
+	'audio_chat_provider'			=> 'Beep de chat de mensagem do motorista',
+	'audio_chat_user'				=> 'Beep de chat de mensagem do usuário',
 	
 );

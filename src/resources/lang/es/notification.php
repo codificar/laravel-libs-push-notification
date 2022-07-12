@@ -25,4 +25,6 @@ return array(
 	'audio_new_ride'				=> 'Sonido de carrera nueva',
 	'audio_cancellation_ride'		=> 'Sonido de carrera cancelada',
 	'audio_push_notify'				=> 'Sonido de notificación push',
+	'audio_chat_provider'			=> 'Sonido de chat con el proveedor',
+	'audio_chat_user'				=> 'Sonido de chat con el usuario',
 );
