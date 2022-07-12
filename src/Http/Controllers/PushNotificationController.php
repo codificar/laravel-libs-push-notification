@@ -15,7 +15,8 @@ use Codificar\PushNotification\Http\Resources\SaveSettingsResource;
 
 use Carbon\Carbon;
 use Auth;
-
+use Error;
+use Exception;
 use Illuminate\Support\Str;
 
 use Input, Validator, View, Response, Session;
@@ -124,122 +125,145 @@ class PushNotificationController extends Controller {
 		$gcm = Input::get('gcm_browser_key');
 		$this->updateSetting('gcm_browser_key', $gcm ? $gcm : '');
 
-		$this->saveAudioCancellationPush();
-		$this->addAudioPush();
-		$this->saveAudioAlert();
+		$errors = [];
+
+		$audioNewRide = $this->saveAudioNewRide();
+		$audioCancellationRide = $this->saveAudioCancellationRide();
+		$audioPushNotify = $this->addAudioPushNotify();
+		
+		if(!$audioNewRide['success']) {
+			$errors[] = $audioNewRide['error'];
+		}
+
+		if(!$audioCancellationRide['success']) {
+			$errors[] = $audioCancellationRide['error'];
+		}
+
+		if(!$audioPushNotify['success']) {
+			$errors[] = $audioPushNotify['error'];
+		}
+
+		$success = true;
+		$error = false;
+
+		if(count($errors) > 0) {
+			$success = false;
+			$error = true;
+		}
 
 		// Return data
 		$data = array(
-			"success" => true,
-			"error" => false
+			"success" => $success,
+			"error" => $error,
+			"errors" => $errors
 		);
 
 		return new SaveSettingsResource($data);
 
 	}
 
-	protected function saveAudioAlert() {
-		if(Input::hasFile('audio_url') || Input::hasFile('audio_beep_url')) {
-
-			// Upload File
-			$file = Input::file('audio_url');
-			if(Input::hasFile('audio_beep_url')) {
-				$file = Input::file('audio_beep_url');
-			}
-			$file_name = Str::random(10);
-			$ext  = $file->getClientOriginalExtension();
-			$size = round( $file->getSize() / 1000 );
-
-			if($ext == "mp3" && $size < 100) {
-				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
-				$local_url = $file_name . "." . $ext;
-
-				// salva no s3 se for o caso
-				upload_to_s3($file_name, $local_url);
-
-				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
-
-				///salvar url no banco de dados.
-				if(Input::hasFile('audio_beep_url')) {
-					Settings::updateOrCreate(['key' => 'audio_beep_url'], ['key' => 'audio_beep_url', 'value' => $audio_beep_url]);
-				} else {
-					Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_beep_url]);
+	protected function saveAudioNewRide() {
+		if(Input::hasFile('audio_new_ride')) {
+			try {
+				// Upload File
+				$file = Input::file('audio_new_ride');
+				$file_name = 'new_ride_' . Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if($ext == "mp3" && $size < 100) {
+					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_new_ride = asset_url() . '/uploads/audio/' . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_new_ride]);
+					Settings::updateOrCreate(['key' => 'audio_beep_url'], ['key' => 'audio_beep_url', 'value' => $audio_new_ride]);
+					Settings::updateOrCreate(['key' => 'audio_new_ride'], ['key' => 'audio_new_ride', 'value' => $audio_new_ride]);
 				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
 			}
+		} else {
+			return ['success' => true];
 		}
 	}
 
-	protected function saveAudioCancellationPush() {
-		if(Input::hasFile('audio_push_cancellation')) {
-
-			// Upload File
-			$file = Input::file('audio_push_cancellation');
-			$file_name = Str::random(10);
-			$ext  = $file->getClientOriginalExtension();
-			$size = round( $file->getSize() / 1000 );
-
-			if($ext == "mp3" && $size < 100) {
-				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
-				$local_url = $file_name . "." . $ext;
-
-				// salva no s3 se for o caso
-				upload_to_s3($file_name, $local_url);
-
-				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
-
-				///salvar url no banco de dados.
-				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_beep_url]);
+	protected function saveAudioCancellationRide() {
+		if(Input::hasFile('audio_ride_cancelation')) {
+			try {
+				// Upload File
+				$file = Input::file('audio_ride_cancelation');
+				$file = Input::file('audio_push_cancellation');
+				$file_name = 'ride_cancelation_' . Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if($ext == "mp3" && $size < 100) {
+					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_cancelation_ride = asset_url() . '/uploads/audio/' . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_cancelation_ride]);
+					Settings::updateOrCreate(['key' => 'audio_ride_cancelation'], ['key' => 'audio_ride_cancelation', 'value' => $audio_cancelation_ride]);
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
 			}
+		} else {
+			return ['success' => true];
 		}
-		if(Input::hasFile('audio_ride_cancellation')) {
-
-			// Upload File
-			$file = Input::file('audio_ride_cancellation');
-			$file_name = 'audio_ride_cancellation' . Str::random(10);
-			$ext  = $file->getClientOriginalExtension();
-			$size = round( $file->getSize() / 1000 );
-
-			if($ext == "mp3" && $size < 100) {
-				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
-				$local_url = $file_name . "." . $ext;
-
-				// salva no s3 se for o caso
-				upload_to_s3($file_name, $local_url);
-
-				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
-
-				///salvar url no banco de dados.
-				Settings::updateOrCreate(['key' => 'audio_ride_cancellation'], ['key' => 'audio_ride_cancellation', 'value' => $audio_beep_url]);
-			}
-		}
-
 	}
 
-	protected function addAudioPush() {
-		if (Input::hasFile('audio_push')) {
+	protected function addAudioPushNotify() {
 
-			// Upload File
-			$file = Input::file('audio_push');
-			$file_name = Str::random(10);
-			$ext  = $file->getClientOriginalExtension();
-			$size = round( $file->getSize() / 1000 );
+		if (Input::hasFile('audio_push_notification')) {			
+			try {
+				// Upload File
+				$file = Input::file('audio_push_notification');
+				$file_name = 'push_notify_'. Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if ($ext == "mp3" && $size < 100) {
+	
+					$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_push_notify = asset_url() . "/uploads/audio//" . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_push_notify]);
+					Settings::updateOrCreate(['key' => 'audio_push_notification'], ['key' => 'audio_push_notification', 'value' => $audio_push_notify]);
 
-			if ($ext == "mp3" && $size < 100) {
-
-				$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
-				$local_url = $file_name . "." . $ext;
-
-				// salva no s3 se for o caso
-				upload_to_s3($file_name, $local_url);
-
-				$audio_beep_url = asset_url() . "/uploads/audio//" . $local_url;
-
-				///salvar url no banco de dados.
-				Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_beep_url]);
-
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
 			}
+		} else {
+			return ['success' => true];
 		}
-
 	}
 
 

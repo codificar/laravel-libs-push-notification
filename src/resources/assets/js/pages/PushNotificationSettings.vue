@@ -78,7 +78,9 @@ export default {
               this.$swal({
                 title: this.trans('notification.settings_saved'),
                 type: 'success'
-              });
+              }).then((result) => {
+                window.location.reload();
+              })
             } else {
               if(response.data.errors && response.data.errors [0]) {
                 this.showErrorMsg(response.data.errors[0]);
@@ -109,17 +111,13 @@ export default {
 
           if(this.audioCancelPush) {
             formData.append('audio_push_cancellation', this.audioCancelPush);
-            formData.append('audio_ride_cancellation', this.audioCancelPush);
           }
 
           if(this.audioPushNewRide) {
             formData.append('audio_new_ride', this.audioPushNewRide);
-            formData.append('audio_push', this.audioPushNewRide);
           }
 
-		  if(this.audioPushNotify) {
-            formData.append('audio_url', this.audioPushNotify);
-            formData.append('audio_beep_url', this.audioPushNotify);
+		      if(this.audioPushNotify) {
             formData.append('audio_push_notification', this.audioPushNotify);
           }
 
@@ -269,7 +267,7 @@ export default {
               <div v-if="audioPushNewRide">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="audioPushNewRide" type="audio/x-wav; audio/x-mp3;" />
+                    <source od="ringSoundSource" :src="AudioNewRideUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
