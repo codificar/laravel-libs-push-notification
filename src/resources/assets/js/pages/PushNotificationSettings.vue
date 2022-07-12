@@ -110,7 +110,7 @@ export default {
           formData.append('gcm_browser_key', this.gcm_browser_key);
 
           if(this.audioCancelPush) {
-            formData.append('audio_push_cancellation', this.audioCancelPush);
+            formData.append('audio_ride_cancelation', this.audioCancelPush);
           }
 
           if(this.audioPushNewRide) {
@@ -271,7 +271,7 @@ export default {
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
-                  <a class="btn btn-secondary" :href="audioPushNewRide" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" :href="AudioNewRideUrl" download>{{ 'Baixar' }}</a>
                   <a class="btn btn-secondary" @click="showUpaloadAudioNewRide = true">{{ 'Trocar' }}</a>
                 </div>
               </div>
