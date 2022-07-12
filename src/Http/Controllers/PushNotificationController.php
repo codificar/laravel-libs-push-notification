@@ -191,6 +191,27 @@ class PushNotificationController extends Controller {
 				Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_beep_url]);
 			}
 		}
+		if(Input::hasFile('audio_ride_cancellation')) {
+
+			// Upload File
+			$file = Input::file('audio_ride_cancellation');
+			$file_name = 'audio_ride_cancellation' . Str::random(10);
+			$ext  = $file->getClientOriginalExtension();
+			$size = round( $file->getSize() / 1000 );
+
+			if($ext == "mp3" && $size < 100) {
+				$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+				$local_url = $file_name . "." . $ext;
+
+				// salva no s3 se for o caso
+				upload_to_s3($file_name, $local_url);
+
+				$audio_beep_url = asset_url() . '/uploads/audio/' . $local_url;
+
+				///salvar url no banco de dados.
+				Settings::updateOrCreate(['key' => 'audio_ride_cancellation'], ['key' => 'audio_ride_cancellation', 'value' => $audio_beep_url]);
+			}
+		}
 
 	}
 
