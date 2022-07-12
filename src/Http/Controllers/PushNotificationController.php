@@ -144,6 +144,9 @@ class PushNotificationController extends Controller {
 		$audioCancellationRide = $this->saveAudioCancellationRide();
 		$audioPushNotify = $this->addAudioPushNotify();
 		
+		$audioChatProvider = $this->addAudioChatProvider();
+		$audioChatUser = $this->addAudioChatUser();
+		
 		if(!$audioNewRide['success']) {
 			$errors[] = $audioNewRide['error'];
 		}
@@ -154,6 +157,13 @@ class PushNotificationController extends Controller {
 
 		if(!$audioPushNotify['success']) {
 			$errors[] = $audioPushNotify['error'];
+		}
+		
+		if(!$audioChatProvider['success']) {
+			$errors[] = $audioChatProvider['error'];
+		}
+		if(!$audioChatUser['success']) {
+			$errors[] = $audioChatUser['error'];
 		}
 
 		$success = true;
@@ -265,6 +275,76 @@ class PushNotificationController extends Controller {
 					///salvar url no banco de dados.
 					Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_push_notify]);
 					Settings::updateOrCreate(['key' => 'audio_push_notification'], ['key' => 'audio_push_notification', 'value' => $audio_push_notify]);
+
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			}
+		} else {
+			return ['success' => true];
+		}
+	}
+
+	protected function addAudioChatProvider() {
+
+		if (Input::hasFile('audio_msg_provider')) {			
+			try {
+				// Upload File
+				$file = Input::file('audio_msg_provider');
+				$file_name = 'chat_provider_'. Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if ($ext == "mp3" && $size < 100) {
+	
+					$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_chat_provider = asset_url() . "/uploads/audio//" . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_chat_provider_notification'], ['key' => 'audio_chat_provider_notification', 'value' => $audio_chat_provider]);
+
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			}
+		} else {
+			return ['success' => true];
+		}
+	}
+
+	protected function addAudioChatUser() {
+
+		if (Input::hasFile('audio_msg_user')) {			
+			try {
+				// Upload File
+				$file = Input::file('audio_msg_user');
+				$file_name = 'chat_user_'. Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if ($ext == "mp3" && $size < 100) {
+	
+					$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_chat_user = asset_url() . "/uploads/audio//" . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_chat_user_notification'], ['key' => 'audio_chat_user_notification', 'value' => $audio_chat_user]);
 
 				}
 				return ['success' => true, 'error' => false];
