@@ -236,7 +236,7 @@ class PushNotificationController extends Controller {
 					$audio_msg_provider = asset_url() . '/uploads/audio/' . $local_url;
 	
 					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_msg_provider'], ['key' => 'audio_msg_provider', 'value' => $audio_msg_provider]);
+					Settings::updateOrCreate(['key' => 'audio_chat_provider_notification'], ['key' => 'audio_chat_provider_notification', 'value' => $audio_msg_provider]);
 				}
 				return ['success' => true, 'error' => false];
 			} catch (Exception $e) {
@@ -269,7 +269,7 @@ class PushNotificationController extends Controller {
 					$audio_msg_user = asset_url() . '/uploads/audio/' . $local_url;
 	
 					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_msg_user'], ['key' => 'audio_msg_user', 'value' => $audio_msg_user]);
+					Settings::updateOrCreate(['key' => 'audio_chat_user_notification'], ['key' => 'audio_chat_user_notification', 'value' => $audio_msg_user]);
 				}
 				return ['success' => true, 'error' => false];
 			} catch (Exception $e) {
