@@ -184,6 +184,104 @@ class PushNotificationController extends Controller {
 		return new SaveSettingsResource($data);
 
 	}
+	public function saveChatSettings() {
+
+		$errors = [];
+
+		$audioMsgProvider = $this->saveAudioMsgProvider();
+		$audioMsgUser = $this->saveAudioMsgUser();
+		
+		if(!$audioMsgProvider['success']) {
+			$errors[] = $audioMsgProvider['error'];
+		}
+
+		if(!$audioMsgUser['success']) {
+			$errors[] = $audioMsgUser['error'];
+		}
+		$success = true;
+		$error = false;
+
+		if(count($errors) > 0) {
+			$success = false;
+			$error = true;
+		}
+
+		// Return data
+		$data = array(
+			"success" => $success,
+			"error" => $error,
+			"errors" => $errors
+		);
+
+		return new SaveSettingsResource($data);
+
+	}
+
+	protected function saveAudioMsgProvider() {
+		if(Input::hasFile('audio_msg_provider')) {
+			try {
+				// Upload File
+				$file = Input::file('audio_msg_provider');
+				$file_name = 'chat_provider_' . Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if($ext == "mp3" && $size < 100) {
+					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_msg_provider = asset_url() . '/uploads/audio/' . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_msg_provider'], ['key' => 'audio_msg_provider', 'value' => $audio_msg_provider]);
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				\Log::error($e->getMessage());
+				return ['success' => false, 'error' => $e->getMessage()];
+			}
+		} else {
+			return ['success' => true];
+		}
+	}
+
+	protected function saveAudioMsgUser() {
+		if(Input::hasFile('audio_msg_user')) {
+			try {
+				// Upload File
+				$file = Input::file('audio_msg_user');
+				$file_name = 'chat_user_' . Str::random(10);
+				$ext  = $file->getClientOriginalExtension();
+				$size = round( $file->getSize() / 1000 );
+	
+				if($ext == "mp3" && $size < 100) {
+					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
+					$local_url = $file_name . "." . $ext;
+	
+					// salva no s3 se for o caso
+					upload_to_s3($file_name, $local_url);
+	
+					$audio_msg_user = asset_url() . '/uploads/audio/' . $local_url;
+	
+					///salvar url no banco de dados.
+					Settings::updateOrCreate(['key' => 'audio_msg_user'], ['key' => 'audio_msg_user', 'value' => $audio_msg_user]);
+				}
+				return ['success' => true, 'error' => false];
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				\Log::error($e->getMessage());
+				return ['success' => false, 'error' => $e->getMessage()];
+			}
+		} else {
+			return ['success' => true];
+		}
+	}
 
 	protected function saveAudioNewRide() {
 		if(Input::hasFile('audio_new_ride')) {
@@ -212,6 +310,7 @@ class PushNotificationController extends Controller {
 			} catch (Exception $e) {
 				return ['success' => false, 'error' => $e->getMessage()];
 			} catch (Error $e) {
+				\Log::error($e->getMessage());
 				return ['success' => false, 'error' => $e->getMessage()];
 			}
 		} else {
@@ -245,6 +344,7 @@ class PushNotificationController extends Controller {
 			} catch (Exception $e) {
 				return ['success' => false, 'error' => $e->getMessage()];
 			} catch (Error $e) {
+				\Log::error($e->getMessage());
 				return ['success' => false, 'error' => $e->getMessage()];
 			}
 		} else {
@@ -281,6 +381,7 @@ class PushNotificationController extends Controller {
 			} catch (Exception $e) {
 				return ['success' => false, 'error' => $e->getMessage()];
 			} catch (Error $e) {
+				\Log::error($e->getMessage());
 				return ['success' => false, 'error' => $e->getMessage()];
 			}
 		} else {
@@ -316,6 +417,7 @@ class PushNotificationController extends Controller {
 			} catch (Exception $e) {
 				return ['success' => false, 'error' => $e->getMessage()];
 			} catch (Error $e) {
+				\Log::error($e->getMessage());
 				return ['success' => false, 'error' => $e->getMessage()];
 			}
 		} else {
@@ -351,6 +453,7 @@ class PushNotificationController extends Controller {
 			} catch (Exception $e) {
 				return ['success' => false, 'error' => $e->getMessage()];
 			} catch (Error $e) {
+				\Log::error($e->getMessage());
 				return ['success' => false, 'error' => $e->getMessage()];
 			}
 		} else {

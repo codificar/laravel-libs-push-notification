@@ -54,6 +54,8 @@ export default {
     },
     handleFileUploadAudioChatUser: function(id) {
       this.audioMsgUser = this.$refs.myFilesAudioCahtUser.files[0];
+      console.log('this.audioMsgUser.size: ', this.audioMsgUser.size);
+
     },
     showErrorMsg(msg) {
       this.$swal({
@@ -152,6 +154,9 @@ export default {
               this.$swal({
                 title: this.trans('notification.settings_saved'),
                 type: 'success'
+              }).then((result) => {
+                console.log(result);
+                document.location.reload(true);
               });
             } else {
               if(response.data.errors && response.data.errors [0]) {
@@ -196,6 +201,9 @@ export default {
               this.$swal({
                 title: this.trans('notification.settings_saved'),
                 type: 'success'
+              }).then((result) => {
+                console.log(result);
+                document.location.reload(true);
               });
             } else {
               if(response.data.errors && response.data.errors [0]) {
@@ -414,61 +422,6 @@ export default {
                 <br>
               </form>
             </div>
-
-            <!--audio Chat Msg Provider Notify -->
-			      <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
-              <div v-if="AudioMsgProviderNotificationUrl">
-                <p>{{ trans('notification.audio_uploaded') }}</p>
-                <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioMsgProviderNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
-                    Seu navegador não tem suporte a reprodução de áudio.
-                </audio>
-                <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioMsgProviderNotificationUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgProviderNotification = true">{{ 'Trocar' }}</a>
-                </div>
-              </div>
-              <form v-if="showUpaloadAudioMsgProviderNotification" id="modalFormRetUrl">
-                <input
-                  type="file"
-                  accept="audio/mp3"
-                  :id="'file'"
-                  :ref="'myFilesAudioCahtProvider'"
-                  class="form-control-file"
-                  @change="handleFileUploadAudioChatProvider"
-                >
-                <br>
-              </form>
-            </div>
-
-            <!--audio Chat Msg User Notify -->
-			      <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
-              <div v-if="AudioMsgUserNotificationUrl">
-                <p>{{ trans('notification.audio_uploaded') }}</p>
-                <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioMsgUserNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
-                    Seu navegador não tem suporte a reprodução de áudio.
-                </audio>
-                <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioMsgUserNotificationUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgUserNotification = true">{{ 'Trocar' }}</a>
-                </div>
-              </div>
-              <form v-if="showUpaloadAudioMsgUserNotification" id="modalFormRetUrl">
-                <input
-                  type="file"
-                  accept="audio/mp3"
-                  :id="'file'"
-                  :ref="'myFilesAudioCahtUser'"
-                  class="form-control-file"
-                  @change="handleFileUploadAudioChatUser"
-                >
-                <br>
-              </form>
-            </div>
-
           </div>
           <div class="form-group text-right save-android-container">
             <button v-on:click="confirmSaveAndroidSettings()" class="btn btn-success">
