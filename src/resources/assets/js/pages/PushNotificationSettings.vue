@@ -46,10 +46,10 @@ export default {
 
       if(this.audioPushNewRide && 
         (this.audioPushNewRide.size > this.sizeLimit || 
-        this.audioPushNewRide.type != 'audio/mp3')
+        this.audioPushNewRide.type != 'audio/mpeg')// mpeg = mp3 
       ) {  
         var message = this.trans('notification.audio_size_error')
-        if(this.audioPushNewRide.type != 'audio/mp3') 
+        if(this.audioPushNewRide.type != 'audio/mpeg')// mpeg = mp3  
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
         this.audioPushNewRide = '';
@@ -62,10 +62,10 @@ export default {
 
       if(this.audioCancelPush && 
         (this.audioCancelPush.size > this.sizeLimit || 
-        this.audioCancelPush.type != 'audio/mp3')
+        this.audioCancelPush.type != 'audio/mpeg')// mpeg = mp3 
       ) {
         var message = this.trans('notification.audio_size_error')
-        if(this.audioCancelPush.type != 'audio/mp3') 
+        if(this.audioCancelPush.type != 'audio/mpeg')// mpeg = mp3  
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
         this.audioCancelPush = '';
@@ -78,10 +78,10 @@ export default {
       
       if(this.audioPushNotify && 
         (this.audioPushNotify.size > this.sizeLimit || 
-        this.audioPushNotify.type != 'audio/mp3')
+        this.audioPushNotify.type != 'audio/mpeg')// mpeg = mp3 
       ) {
         var message = this.trans('notification.audio_size_error')
-        if(this.audioPushNotify.type != 'audio/mp3') 
+        if(this.audioPushNotify.type != 'audio/mpeg')// mpeg = mp3  
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
         this.audioPushNotify = '';
@@ -94,10 +94,10 @@ export default {
       
       if(this.audioMsgProvider && 
         (this.audioMsgProvider.size > this.sizeLimit ||
-        this.audioMsgProvider.type != 'audio/mp3')
+        this.audioMsgProvider.type != 'audio/mpeg')// mpeg = mp3 
       ) {
         var message = this.trans('notification.audio_size_error')
-        if(this.audioMsgProvider.type != 'audio/mp3') 
+        if(this.audioMsgProvider.type != 'audio/mpeg')// mpeg = mp3  
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
         this.audioMsgProvider = '';
@@ -110,11 +110,11 @@ export default {
       
       if(this.audioMsgUser && 
         (this.audioMsgUser.size > this.sizeLimit || 
-        this.audioMsgUser.type != 'audio/mp3')
+        this.audioMsgUser.type != 'audio/mpeg')// mpeg = mp3 
       ) {
         var message = this.trans('notification.audio_size_error')
         console.log('this.audioMsgUser: ', this.audioMsgUser)
-        if(this.audioMsgUser.type != 'audio/mp3') 
+        if(this.audioMsgUser.type != 'audio/mpeg')// mpeg = mp3  
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
         this.audioMsgUser = '';
