@@ -44,44 +44,65 @@ export default {
     handleFileUploadAudioNewRide: function(id) {
       this.audioPushNewRide = this.$refs.myFilesAudioNewRide.files[0];
 
-      if(this.audioPushNewRide && this.audioPushNewRide.size > this.sizeLimit) {
+      if(this.audioPushNewRide && 
+        this.audioPushNewRide.size > 
+        this.sizeLimit && this.audioPushNewRide.type != 'audio/mp3'
+      ) {  
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNewRide = '';
+        this.$refs.myFilesAudioNewRide.files = null
         return false;
       }
     },
     handleFileUploadAudioCancelRide: function(id) {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
 
-      if(this.audioCancelPush && this.audioCancelPush.size > this.sizeLimit) {
+      if(this.audioCancelPush && 
+        this.audioCancelPush.size > this.sizeLimit && 
+        this.audioCancelPush.type != 'audio/mp3'
+      ) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioCancelPush = '';
+        this.$refs.myFilesAudioCancel.files = null
         return false;
       }
     },
     handleFileUploadAudioPushNotify: function(id) {
       this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
       
-      if(this.audioPushNotify && this.audioPushNotify.size > this.sizeLimit) {
+      if(this.audioPushNotify && 
+        this.audioPushNotify.size > this.sizeLimit && 
+        this.audioPushNotify.type != 'audio/mp3'
+      ) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNotify = '';
+        this.$refs.myFilesAudioPushNotify.files = null;
         return false;
       }
     },
     handleFileUploadAudioChatProvider: function(id) {
       this.audioMsgProvider = this.$refs.myFilesAudioChatProvider.files[0];
       
-      if(this.audioMsgProvider && this.audioMsgProvider.size > this.sizeLimit) {
+      if(this.audioMsgProvider && 
+        this.audioMsgProvider.size > this.sizeLimit && 
+        this.audioMsgProvider.type != 'audio/mp3'
+      ) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioMsgProvider = '';
+        this.$refs.myFilesAudioChatProvider.files = null;
         return false;
       }
     },
     handleFileUploadAudioChatUser: function(id) {
       this.audioMsgUser = this.$refs.myFilesAudioChatUser.files[0];
       
-      if(this.audioMsgUser && this.audioMsgUser.size > this.sizeLimit) {
+      if(this.audioMsgUser && 
+        this.audioMsgUser.size > this.sizeLimit && 
+        this.audioMsgUser.type != 'audio/mp3'
+      ) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
+        this.audioMsgUser = '';
+        this.$refs.myFilesAudioChatUser.files = null;
         return false;
       }
 
