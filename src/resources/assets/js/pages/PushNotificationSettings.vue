@@ -44,7 +44,7 @@ export default {
       this.audioPushNewRide = this.$refs.myFilesAudioNewRide.files[0];
 
       if(this.audioPushNewRide && this.audioPushNewRide.size > 300) {
-        this.showToast(this.trans('notification.audio_size_error'));
+        this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNewRide = '';
         return false;
       }
@@ -53,7 +53,7 @@ export default {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
 
       if(this.audioCancelPush && this.audioCancelPush.size > 300) {
-        this.showToast(this.trans('notification.audio_size_error'));
+        this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioCancelPush = '';
         return false;
       }
@@ -62,7 +62,7 @@ export default {
       this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
       
       if(this.audioPushNotify && this.audioPushNotify.size > 300) {
-        this.showToast(this.trans('notification.audio_size_error'));
+        this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNotify = '';
         return false;
       }
@@ -71,7 +71,7 @@ export default {
       this.audioMsgProvider = this.$refs.myFilesAudioChatProvider.files[0];
       
       if(this.audioMsgProvider && this.audioMsgProvider.size > 300) {
-        this.showToast(this.trans('notification.audio_size_error'));
+        this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioMsgProvider = '';
         return false;
       }
@@ -80,19 +80,10 @@ export default {
       this.audioMsgUser = this.$refs.myFilesAudioChatUser.files[0];
       
       if(this.audioMsgUser && this.audioMsgUser.size > 300) {
-        this.showToast(this.trans('notification.audio_size_error'));
+        this.showErrorMsg(this.trans('notification.audio_size_error'));
         return false;
       }
 
-    },
-    showToast(message, position = 'is-bottom-center', isSuccess = false) {
-      var typeNotify = isSuccess ? 'is-success' : 'is-danger'; 
-      this.$toast.open({
-          message: message,
-          type: typeNotify,
-          position: position,
-          duration: 3000
-        });
     },
     showErrorMsg(msg) {
       this.$swal({
