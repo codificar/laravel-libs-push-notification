@@ -32,7 +32,6 @@ export default {
       showUpaloadAudioNewRide: false,
       showUpaloadAudioCancel: false,
       showUpaloadAudioPushNotification: false,
-
       showUpaloadAudioMsgProviderNotification: false,
       showUpaloadAudioMsgUserNotification: false
     };
