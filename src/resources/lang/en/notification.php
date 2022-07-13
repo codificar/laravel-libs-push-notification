@@ -18,6 +18,7 @@ return array(
 	'yes'							=> 'Yea',
 	'no'							=> 'No',
 	'save_android_settings'			=> 'Save android settings',
+	'save_chat_settings'			=> 'Save chat settings',
 	'gcm_browser_key'    			=> 'GCM Browser Key',
 	'audio_push'					=> 'Audio File',
 	'audio_push_cancellation'		=> 'Audio Cancel File',
@@ -28,4 +29,5 @@ return array(
 	'audio_push_notify'				=> 'Beep Push Notify',
 	'audio_chat_provider'			=> 'Beep Chat Provider',
 	'audio_chat_user'				=> 'Beep Chat User',
+	'audio_size_error'				=> 'Audio File Size Exceed 300kb',
 );

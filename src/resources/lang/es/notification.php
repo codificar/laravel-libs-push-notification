@@ -18,6 +18,7 @@ return array(
 	'yes'							=> 'Sí',
 	'no'							=> 'No',
 	'save_android_settings'			=> 'Guardar la configuración de Android',
+	'save_chat_settings'			=> 'Guardar la configuración de Chat',
 	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
 	'audio_push'					=> 'Archivo de audio',
 	'audio_push_cancellation'		=> 'Carrera cancelar audio',
@@ -28,4 +29,5 @@ return array(
 	'audio_push_notify'				=> 'Sonido de notificación push',
 	'audio_chat_provider'			=> 'Sonido de chat con el proveedor',
 	'audio_chat_user'				=> 'Sonido de chat con el usuario',
+	'audio_size_error'				=> 'El tamaño del archivo de audio excede el límite de 300kb',
 );

@@ -18,6 +18,7 @@ return array(
 	'yes'							=> 'Sim',
 	'no'							=> 'Não',
 	'save_android_settings'			=> 'Salvar configurações Android',
+	'save_chat_settings'			=> 'Salvar configurações de Chat',
 	'gcm_browser_key'    			=> 'Chave de Navegação GCM',
 	'audio_push'					=> 'Áudio de notificação push do Android',
 	'audio_push_cancellation'		=> 'Áudio de cancelamento de corrida',
@@ -29,4 +30,5 @@ return array(
 	'audio_push_notify'				=> 'Beep de notificação push',
 	'audio_chat_provider'			=> 'Beep de chat de mensagem do motorista',
 	'audio_chat_user'				=> 'Beep de chat de mensagem do usuário',
+	'audio_size_error'				=> 'Tamanho do arquivo de áudio excede o limite de 300kb',
 );
