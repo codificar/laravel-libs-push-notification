@@ -27,6 +27,7 @@ export default {
       audioMsgProvider: '',
       audioMsgUser: '',
       gcm_browser_key: '',
+      sizeLimit: 300000, // in bytes
       show_upload_btn_p8: false,
       showUpaloadAudioNewRide: false,
       showUpaloadAudioCancel: false,
@@ -43,7 +44,7 @@ export default {
     handleFileUploadAudioNewRide: function(id) {
       this.audioPushNewRide = this.$refs.myFilesAudioNewRide.files[0];
 
-      if(this.audioPushNewRide && this.audioPushNewRide.size > 300) {
+      if(this.audioPushNewRide && this.audioPushNewRide.size > this.sizeLimit) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNewRide = '';
         return false;
@@ -52,7 +53,7 @@ export default {
     handleFileUploadAudioCancelRide: function(id) {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
 
-      if(this.audioCancelPush && this.audioCancelPush.size > 300) {
+      if(this.audioCancelPush && this.audioCancelPush.size > this.sizeLimit) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioCancelPush = '';
         return false;
@@ -61,7 +62,7 @@ export default {
     handleFileUploadAudioPushNotify: function(id) {
       this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
       
-      if(this.audioPushNotify && this.audioPushNotify.size > 300) {
+      if(this.audioPushNotify && this.audioPushNotify.size > this.sizeLimit) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioPushNotify = '';
         return false;
@@ -70,7 +71,7 @@ export default {
     handleFileUploadAudioChatProvider: function(id) {
       this.audioMsgProvider = this.$refs.myFilesAudioChatProvider.files[0];
       
-      if(this.audioMsgProvider && this.audioMsgProvider.size > 300) {
+      if(this.audioMsgProvider && this.audioMsgProvider.size > this.sizeLimit) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         this.audioMsgProvider = '';
         return false;
@@ -79,7 +80,7 @@ export default {
     handleFileUploadAudioChatUser: function(id) {
       this.audioMsgUser = this.$refs.myFilesAudioChatUser.files[0];
       
-      if(this.audioMsgUser && this.audioMsgUser.size > 300) {
+      if(this.audioMsgUser && this.audioMsgUser.size > this.sizeLimit) {
         this.showErrorMsg(this.trans('notification.audio_size_error'));
         return false;
       }
