@@ -113,6 +113,7 @@ export default {
         this.audioMsgUser.type != 'audio/mp3')
       ) {
         var message = this.trans('notification.audio_size_error')
+        console.log('this.audioMsgUser: ', this.audioMsgUser)
         if(this.audioMsgUser.type != 'audio/mp3') 
           message = this.trans('notification.audio_type_error');
         this.showErrorMsg(message);
