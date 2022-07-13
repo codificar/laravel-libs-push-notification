@@ -30,4 +30,5 @@ return array(
 	'audio_chat_provider'			=> 'Beep Chat Provider',
 	'audio_chat_user'				=> 'Beep Chat User',
 	'audio_size_error'				=> 'Audio File Size Exceed 300kb',
+	'audio_type_error'				=> 'Audio File Type Invalid, Please Choose mp3 file.',
 );

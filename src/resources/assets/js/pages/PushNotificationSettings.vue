@@ -45,10 +45,13 @@ export default {
       this.audioPushNewRide = this.$refs.myFilesAudioNewRide.files[0];
 
       if(this.audioPushNewRide && 
-        this.audioPushNewRide.size > 
-        this.sizeLimit && this.audioPushNewRide.type != 'audio/mp3'
+        (this.audioPushNewRide.size > this.sizeLimit || 
+        this.audioPushNewRide.type != 'audio/mp3')
       ) {  
-        this.showErrorMsg(this.trans('notification.audio_size_error'));
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioPushNewRide.type != 'audio/mp3') 
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
         this.audioPushNewRide = '';
         this.$refs.myFilesAudioNewRide.files = null
         return false;
@@ -58,10 +61,13 @@ export default {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
 
       if(this.audioCancelPush && 
-        this.audioCancelPush.size > this.sizeLimit && 
-        this.audioCancelPush.type != 'audio/mp3'
+        (this.audioCancelPush.size > this.sizeLimit || 
+        this.audioCancelPush.type != 'audio/mp3')
       ) {
-        this.showErrorMsg(this.trans('notification.audio_size_error'));
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioCancelPush.type != 'audio/mp3') 
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
         this.audioCancelPush = '';
         this.$refs.myFilesAudioCancel.files = null
         return false;
@@ -71,10 +77,13 @@ export default {
       this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
       
       if(this.audioPushNotify && 
-        this.audioPushNotify.size > this.sizeLimit && 
-        this.audioPushNotify.type != 'audio/mp3'
+        (this.audioPushNotify.size > this.sizeLimit || 
+        this.audioPushNotify.type != 'audio/mp3')
       ) {
-        this.showErrorMsg(this.trans('notification.audio_size_error'));
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioPushNotify.type != 'audio/mp3') 
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
         this.audioPushNotify = '';
         this.$refs.myFilesAudioPushNotify.files = null;
         return false;
@@ -84,10 +93,13 @@ export default {
       this.audioMsgProvider = this.$refs.myFilesAudioChatProvider.files[0];
       
       if(this.audioMsgProvider && 
-        this.audioMsgProvider.size > this.sizeLimit && 
-        this.audioMsgProvider.type != 'audio/mp3'
+        (this.audioMsgProvider.size > this.sizeLimit ||
+        this.audioMsgProvider.type != 'audio/mp3')
       ) {
-        this.showErrorMsg(this.trans('notification.audio_size_error'));
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioMsgProvider.type != 'audio/mp3') 
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
         this.audioMsgProvider = '';
         this.$refs.myFilesAudioChatProvider.files = null;
         return false;
@@ -97,10 +109,13 @@ export default {
       this.audioMsgUser = this.$refs.myFilesAudioChatUser.files[0];
       
       if(this.audioMsgUser && 
-        this.audioMsgUser.size > this.sizeLimit && 
-        this.audioMsgUser.type != 'audio/mp3'
+        (this.audioMsgUser.size > this.sizeLimit || 
+        this.audioMsgUser.type != 'audio/mp3')
       ) {
-        this.showErrorMsg(this.trans('notification.audio_size_error'));
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioMsgUser.type != 'audio/mp3') 
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
         this.audioMsgUser = '';
         this.$refs.myFilesAudioChatUser.files = null;
         return false;

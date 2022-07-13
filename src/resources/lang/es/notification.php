@@ -30,4 +30,5 @@ return array(
 	'audio_chat_provider'			=> 'Sonido de chat con el proveedor',
 	'audio_chat_user'				=> 'Sonido de chat con el usuario',
 	'audio_size_error'				=> 'El tamaño del archivo de audio excede el límite de 300kb',
+	'audio_type_error'  			=> 'Tipo de archivo de audio inválido, por favor seleccione un archivo de tipo mp3.',
 );

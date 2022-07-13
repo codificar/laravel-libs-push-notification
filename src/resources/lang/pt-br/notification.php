@@ -31,4 +31,5 @@ return array(
 	'audio_chat_provider'			=> 'Beep de chat de mensagem do motorista',
 	'audio_chat_user'				=> 'Beep de chat de mensagem do usuário',
 	'audio_size_error'				=> 'Tamanho do arquivo de áudio excede o limite de 300kb',
+	'audio_type_error'				=> 'Tipo de arquivo de áudio inválido, por favor escolha um arquivo do tipo mp3.',
 );
