@@ -10,9 +10,7 @@ export default {
     "GcmBrowserKey", 
     "AudioNewRideUrl", 
     "AudioRideCancellationUrl", 
-    "AudioPushNotificationUrl",
-    "AudioMsgProviderNotificationUrl",
-    "AudioMsgUserNotificationUrl"
+    "AudioPushNotificationUrl"
   ],
   data() {
     return {
@@ -24,16 +22,12 @@ export default {
       audioPushNewRide: '',
       audioCancelPush: '',
       audioPushNotify: '',
-      audioMsgProvider: '',
-      audioMsgUser: '',
       gcm_browser_key: '',
       sizeLimit: 300000, // in bytes
       show_upload_btn_p8: false,
       showUpaloadAudioNewRide: false,
       showUpaloadAudioCancel: false,
-      showUpaloadAudioPushNotification: false,
-      showUpaloadAudioMsgProviderNotification: false,
-      showUpaloadAudioMsgUserNotification: false
+      showUpaloadAudioPushNotification: false
     };
   },
   methods: {
@@ -87,40 +81,6 @@ export default {
         this.$refs.myFilesAudioPushNotify.files = null;
         return false;
       }
-    },
-    handleFileUploadAudioChatProvider: function(id) {
-      this.audioMsgProvider = this.$refs.myFilesAudioChatProvider.files[0];
-      
-      if(this.audioMsgProvider && 
-        (this.audioMsgProvider.size > this.sizeLimit ||
-        this.audioMsgProvider.type != 'audio/mpeg')// mpeg = mp3 
-      ) {
-        var message = this.trans('notification.audio_size_error')
-        if(this.audioMsgProvider.type != 'audio/mpeg')// mpeg = mp3  
-          message = this.trans('notification.audio_type_error');
-        this.showErrorMsg(message);
-        this.audioMsgProvider = '';
-        this.$refs.myFilesAudioChatProvider.files = null;
-        return false;
-      }
-    },
-    handleFileUploadAudioChatUser: function(id) {
-      this.audioMsgUser = this.$refs.myFilesAudioChatUser.files[0];
-      
-      if(this.audioMsgUser && 
-        (this.audioMsgUser.size > this.sizeLimit || 
-        this.audioMsgUser.type != 'audio/mpeg')// mpeg = mp3 
-      ) {
-        var message = this.trans('notification.audio_size_error')
-        console.log('this.audioMsgUser: ', this.audioMsgUser)
-        if(this.audioMsgUser.type != 'audio/mpeg')// mpeg = mp3  
-          message = this.trans('notification.audio_type_error');
-        this.showErrorMsg(message);
-        this.audioMsgUser = '';
-        this.$refs.myFilesAudioChatUser.files = null;
-        return false;
-      }
-
     },
     showErrorMsg(msg) {
       this.$swal({
@@ -201,63 +161,7 @@ export default {
             formData.append('audio_push_notification', this.audioPushNotify);
           }
 
-		      if(this.audioMsgProvider) {
-            formData.append('audio_msg_provider', this.audioMsgProvider);
-          }
-
-		      if(this.audioMsgUser) {
-            formData.append('audio_msg_user', this.audioMsgUser);
-          }
-
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }).then(response => {
-            console.log("resoponse", response);
-            if(response.data.success) {
-              this.$swal({
-                title: this.trans('notification.settings_saved'),
-                type: 'success'
-              }).then((result) => {
-                console.log(result);
-                document.location.reload(true);
-              });
-            } else {
-              if(response.data.errors && response.data.errors [0]) {
-                this.showErrorMsg(response.data.errors[0]);
-              } else {
-                this.showErrorMsg("Error");
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            this.showErrorMsg("Error");
-          });
-        }
-      });
-    },
-    confirmSaveChatSettings() {
-      this.$swal({
-        title: this.trans('notification.save_chat_settings'),
-        type: 'question',
-        showCancelButton: true,
-        confirmButtonText: this.trans('notification.yes'),
-        cancelButtonText: this.trans('notification.no')
-      }).then((result) => {
-        if (result.value) {
-          let formData = new FormData();
-		      
-          if(this.audioMsgProvider) {
-            formData.append('audio_msg_provider', this.audioMsgProvider);
-          }
-
-		      if(this.audioMsgUser) {
-            formData.append('audio_msg_user', this.audioMsgUser);
-          }
-
-          axios.post('/admin/libs/push_notification/save_settings/chat', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -310,14 +214,7 @@ export default {
     if(!this.AudioPushNotificationUrl) {
       this.showUpaloadAudioPushNotification = true;
     }
-    
-    if(!this.AudioMsgProviderNotificationUrl) {
-      this.showUpaloadAudioMsgProviderNotification = true;
-    }
 
-    if(!this.AudioMsgUserNotificationUrl) {
-      this.showUpaloadAudioMsgUserNotification = true;
-    }
   },
 };
 </script>
@@ -496,82 +393,6 @@ export default {
                 aria-hidden="true"
               ></span>
               {{ trans("notification.save_android_settings") }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-margin-top">
-      <div class="card-outline-info">
-        <div class="card-header">
-          <h4 class="m-b-0 text-white">
-            {{ trans("notification.chat_settings") }}
-          </h4>
-        </div>
-        <div class="card-block">          
-          <div class="row">
-            <!--audio Chat Msg Provider Notify -->
-			      <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_provider') }}</h3>
-              <div v-if="AudioMsgProviderNotificationUrl">
-                <p>{{ trans('notification.audio_uploaded') }}</p>
-                <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioMsgProviderNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
-                    Seu navegador não tem suporte a reprodução de áudio.
-                </audio>
-                <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioMsgProviderNotificationUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgProviderNotification = true">{{ 'Trocar' }}</a>
-                </div>
-              </div>
-              <form v-if="showUpaloadAudioMsgProviderNotification" id="modalFormRetUrl">
-                <input
-                  type="file"
-                  accept="audio/mp3"
-                  :id="'file'"
-                  :ref="'myFilesAudioChatProvider'"
-                  class="form-control-file"
-                  @change="handleFileUploadAudioChatProvider"
-                >
-                <br>
-              </form>
-            </div>
-
-            <!--audio Chat Msg User Notify -->
-			      <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_chat_user') }}</h3>
-              <div v-if="AudioMsgUserNotificationUrl">
-                <p>{{ trans('notification.audio_uploaded') }}</p>
-                <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioMsgUserNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
-                    Seu navegador não tem suporte a reprodução de áudio.
-                </audio>
-                <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioMsgUserNotificationUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="showUpaloadAudioMsgUserNotification = true">{{ 'Trocar' }}</a>
-                </div>
-              </div>
-              <form v-if="showUpaloadAudioMsgUserNotification" id="modalFormRetUrl">
-                <input
-                  type="file"
-                  accept="audio/mp3"
-                  :id="'file'"
-                  :ref="'myFilesAudioChatUser'"
-                  class="form-control-file"
-                  @change="handleFileUploadAudioChatUser"
-                >
-                <br>
-              </form>
-            </div>
-
-          </div>
-          <div class="form-group text-right save-android-container">
-            <button v-on:click="confirmSaveChatSettings()" class="btn btn-success">
-              <span
-                class="glyphicon glyphicon-floppy-disk"
-                aria-hidden="true"
-              ></span>
-              {{ trans("notification.save_chat_settings") }}
             </button>
           </div>
         </div>

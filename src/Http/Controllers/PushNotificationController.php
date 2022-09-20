@@ -144,9 +144,6 @@ class PushNotificationController extends Controller {
 		$audioCancellationRide = $this->saveAudioCancellationRide();
 		$audioPushNotify = $this->addAudioPushNotify();
 		
-		$audioChatProvider = $this->addAudioChatProvider();
-		$audioChatUser = $this->addAudioChatUser();
-		
 		if(!$audioNewRide['success']) {
 			$errors[] = $audioNewRide['error'];
 		}
@@ -158,13 +155,6 @@ class PushNotificationController extends Controller {
 		if(!$audioPushNotify['success']) {
 			$errors[] = $audioPushNotify['error'];
 		}
-		
-		if(!$audioChatProvider['success']) {
-			$errors[] = $audioChatProvider['error'];
-		}
-		if(!$audioChatUser['success']) {
-			$errors[] = $audioChatUser['error'];
-		}
 
 		$success = true;
 		$error = false;
@@ -183,104 +173,6 @@ class PushNotificationController extends Controller {
 
 		return new SaveSettingsResource($data);
 
-	}
-	public function saveChatSettings() {
-
-		$errors = [];
-
-		$audioMsgProvider = $this->saveAudioMsgProvider();
-		$audioMsgUser = $this->saveAudioMsgUser();
-		
-		if(!$audioMsgProvider['success']) {
-			$errors[] = $audioMsgProvider['error'];
-		}
-
-		if(!$audioMsgUser['success']) {
-			$errors[] = $audioMsgUser['error'];
-		}
-		$success = true;
-		$error = false;
-
-		if(count($errors) > 0) {
-			$success = false;
-			$error = true;
-		}
-
-		// Return data
-		$data = array(
-			"success" => $success,
-			"error" => $error,
-			"errors" => $errors
-		);
-
-		return new SaveSettingsResource($data);
-
-	}
-
-	protected function saveAudioMsgProvider() {
-		if(Input::hasFile('audio_msg_provider')) {
-			try {
-				// Upload File
-				$file = Input::file('audio_msg_provider');
-				$file_name = 'chat_provider_' . Str::random(10);
-				$ext  = $file->getClientOriginalExtension();
-				$size = round( $file->getSize() / 1000 );
-	
-				if($ext == "mp3" && $size < 100) {
-					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
-					$local_url = $file_name . "." . $ext;
-	
-					// salva no s3 se for o caso
-					upload_to_s3($file_name, $local_url);
-	
-					$audio_msg_provider = asset_url() . '/uploads/audio/' . $local_url;
-	
-					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_chat_provider_notification'], ['key' => 'audio_chat_provider_notification', 'value' => $audio_msg_provider]);
-				}
-				return ['success' => true, 'error' => false];
-			} catch (Exception $e) {
-				return ['success' => false, 'error' => $e->getMessage()];
-			} catch (Error $e) {
-				\Log::error($e->getMessage());
-				return ['success' => false, 'error' => $e->getMessage()];
-			}
-		} else {
-			return ['success' => true];
-		}
-	}
-
-	protected function saveAudioMsgUser() {
-		if(Input::hasFile('audio_msg_user')) {
-			try {
-				// Upload File
-				$file = Input::file('audio_msg_user');
-				$file_name = 'chat_user_' . Str::random(10);
-				$ext  = $file->getClientOriginalExtension();
-				$size = round( $file->getSize() / 1000 );
-	
-				if($ext == "mp3" && $size < 100) {
-					$file->move(public_path() . "/uploads/audio/", $file_name . "." . $ext);
-					$local_url = $file_name . "." . $ext;
-	
-					// salva no s3 se for o caso
-					upload_to_s3($file_name, $local_url);
-	
-					$audio_msg_user = asset_url() . '/uploads/audio/' . $local_url;
-	
-					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_chat_user_notification'], ['key' => 'audio_chat_user_notification', 'value' => $audio_msg_user]);
-				}
-				return ['success' => true, 'error' => false];
-			} catch (Exception $e) {
-				return ['success' => false, 'error' => $e->getMessage()];
-			} catch (Error $e) {
-				\Log::error($e->getMessage());
-				return ['success' => false, 'error' => $e->getMessage()];
-			}
-		} else {
-			return ['success' => true];
-		}
 	}
 
 	protected function saveAudioNewRide() {
@@ -302,9 +194,27 @@ class PushNotificationController extends Controller {
 					$audio_new_ride = asset_url() . '/uploads/audio/' . $local_url;
 	
 					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_url'], ['key' => 'audio_url', 'value' => $audio_new_ride]);
-					Settings::updateOrCreate(['key' => 'audio_beep_url'], ['key' => 'audio_beep_url', 'value' => $audio_new_ride]);
-					Settings::updateOrCreate(['key' => 'audio_new_ride'], ['key' => 'audio_new_ride', 'value' => $audio_new_ride]);
+					Settings::updateOrCreate(
+						array('key' => 'audio_url'),
+						array(
+							'key' => 'audio_url', 		
+							'value' => $audio_new_ride
+						)
+					);
+					Settings::updateOrCreate(
+						array('key' => 'audio_beep_url'),
+						array(
+							'key' => 'audio_beep_url', 
+							'value' => $audio_new_ride
+						)
+					);
+					Settings::updateOrCreate(
+						array('key' => 'audio_new_ride'),
+						array(
+							'key' => 'audio_new_ride', 
+							'value' => $audio_new_ride
+						)
+					);
 				}
 				return ['success' => true, 'error' => false];
 			} catch (Exception $e) {
@@ -337,8 +247,20 @@ class PushNotificationController extends Controller {
 					$audio_cancelation_ride = asset_url() . '/uploads/audio/' . $local_url;
 	
 					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_push_cancellation'], ['key' => 'audio_push_cancellation', 'value' => $audio_cancelation_ride]);
-					Settings::updateOrCreate(['key' => 'audio_ride_cancelation'], ['key' => 'audio_ride_cancelation', 'value' => $audio_cancelation_ride]);
+					Settings::updateOrCreate(
+						array('key' => 'audio_push_cancellation'), 	
+						array(
+							'key' => 'audio_push_cancellation',
+							'value' => $audio_cancelation_ride
+						)
+					);
+					Settings::updateOrCreate(
+						array('key' => 'audio_ride_cancelation'), 	
+						array(
+							'key' => 'audio_ride_cancelation', 
+							'value' => $audio_cancelation_ride
+						)
+					);
 				}
 				return ['success' => true, 'error' => false];
 			} catch (Exception $e) {
@@ -373,8 +295,20 @@ class PushNotificationController extends Controller {
 					$audio_push_notify = asset_url() . "/uploads/audio//" . $local_url;
 	
 					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_push'], ['key' => 'audio_push', 'value' => $audio_push_notify]);
-					Settings::updateOrCreate(['key' => 'audio_push_notification'], ['key' => 'audio_push_notification', 'value' => $audio_push_notify]);
+					Settings::updateOrCreate(
+						array('key' => 'audio_push'),
+						array(
+							'key' => 'audio_push', 
+							'value' => $audio_push_notify
+						)
+					);
+					Settings::updateOrCreate(
+						array('key' => 'audio_push_notification'), 	
+						array(
+							'key' => 'audio_push_notification', 
+							'value' => $audio_push_notify
+						)
+					);
 
 				}
 				return ['success' => true, 'error' => false];
@@ -424,43 +358,6 @@ class PushNotificationController extends Controller {
 			return ['success' => true];
 		}
 	}
-
-	protected function addAudioChatUser() {
-
-		if (Input::hasFile('audio_msg_user')) {			
-			try {
-				// Upload File
-				$file = Input::file('audio_msg_user');
-				$file_name = 'chat_user_'. Str::random(10);
-				$ext  = $file->getClientOriginalExtension();
-				$size = round( $file->getSize() / 1000 );
-	
-				if ($ext == "mp3" && $size < 100) {
-	
-					$file->move(public_path() . "/uploads/audio//", $file_name . "." . $ext);
-					$local_url = $file_name . "." . $ext;
-	
-					// salva no s3 se for o caso
-					upload_to_s3($file_name, $local_url);
-	
-					$audio_chat_user = asset_url() . "/uploads/audio//" . $local_url;
-	
-					///salvar url no banco de dados.
-					Settings::updateOrCreate(['key' => 'audio_chat_user_notification'], ['key' => 'audio_chat_user_notification', 'value' => $audio_chat_user]);
-
-				}
-				return ['success' => true, 'error' => false];
-			} catch (Exception $e) {
-				return ['success' => false, 'error' => $e->getMessage()];
-			} catch (Error $e) {
-				\Log::error($e->getMessage());
-				return ['success' => false, 'error' => $e->getMessage()];
-			}
-		} else {
-			return ['success' => true];
-		}
-	}
-
 
 	private function updateSetting($key, $value) {
 		Settings::where('key', $key)->first()->update(['value' => $value]);
