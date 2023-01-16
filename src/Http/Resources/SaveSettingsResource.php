@@ -35,7 +35,8 @@ class SaveSettingsResource extends JsonResource
     {
         return [
             'success'           		=> $this['success'],
-            'error'             		=> $this['error']
+            'error'             		=> $this['error'],
+            'errors'             		=> $this['errors']
         ];
     }
 }

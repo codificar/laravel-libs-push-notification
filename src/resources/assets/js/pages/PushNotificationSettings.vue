@@ -1,7 +1,17 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["IosP8url", "IosKeyId", "IosTeamId", "PackageUser", "PackageProvider", "GcmBrowserKey", "AudioPushUrl", "AudioPushCancelUrl", "AudioUrl", "AudioBeepUrl"],
+  props: [
+    "IosP8url", 
+    "IosKeyId", 
+    "IosTeamId", 
+    "PackageUser", 
+    "PackageProvider", 
+    "GcmBrowserKey", 
+    "AudioNewRideUrl", 
+    "AudioRideCancellationUrl", 
+    "AudioPushNotificationUrl"
+  ],
   data() {
     return {
       ios_key_id: '',
@@ -9,28 +19,68 @@ export default {
       package_user: '',
       package_provider: '',
       p8FileUpload: '',
-      audioPush: '',
-      audioUrl: '',
+      audioPushNewRide: '',
       audioCancelPush: '',
+      audioPushNotify: '',
       gcm_browser_key: '',
+      sizeLimit: 300000, // in bytes
       show_upload_btn_p8: false,
-      show_upload_btn_audio_push: false,
-      show_upload_btn_audio_url: false,
-      show_upload_btn_audio_push_cancel: false
+      showUpaloadAudioNewRide: false,
+      showUpaloadAudioCancel: false,
+      showUpaloadAudioPushNotification: false
     };
   },
   methods: {
     handleFileUpload: function(id) {
       this.p8FileUpload = this.$refs.myFiles.files[0];
     },
-    handleFileUploadAudio: function(id) {
-      this.audioPush = this.$refs.myFilesAudio.files[0];
+    handleFileUploadAudioNewRide: function(id) {
+      this.audioPushNewRide = this.$refs.myFilesAudioNewRide.files[0];
+
+      if(this.audioPushNewRide && 
+        (this.audioPushNewRide.size > this.sizeLimit || 
+        this.audioPushNewRide.type != 'audio/mpeg')// mpeg = mp3 
+      ) {  
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioPushNewRide.type != 'audio/mpeg')// mpeg = mp3  
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
+        this.audioPushNewRide = '';
+        this.$refs.myFilesAudioNewRide.files = null
+        return false;
+      }
     },
-    handleFileUploadAudioUrl: function(id) {
-      this.audioUrl = this.$refs.myFilesAudioUrl.files[0];
-    },
-    handleFileUploadAudioCancel: function(id) {
+    handleFileUploadAudioCancelRide: function(id) {
       this.audioCancelPush = this.$refs.myFilesAudioCancel.files[0];
+
+      if(this.audioCancelPush && 
+        (this.audioCancelPush.size > this.sizeLimit || 
+        this.audioCancelPush.type != 'audio/mpeg')// mpeg = mp3 
+      ) {
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioCancelPush.type != 'audio/mpeg')// mpeg = mp3  
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
+        this.audioCancelPush = '';
+        this.$refs.myFilesAudioCancel.files = null
+        return false;
+      }
+    },
+    handleFileUploadAudioPushNotify: function(id) {
+      this.audioPushNotify = this.$refs.myFilesAudioPushNotify.files[0];
+      
+      if(this.audioPushNotify && 
+        (this.audioPushNotify.size > this.sizeLimit || 
+        this.audioPushNotify.type != 'audio/mpeg')// mpeg = mp3 
+      ) {
+        var message = this.trans('notification.audio_size_error')
+        if(this.audioPushNotify.type != 'audio/mpeg')// mpeg = mp3  
+          message = this.trans('notification.audio_type_error');
+        this.showErrorMsg(message);
+        this.audioPushNotify = '';
+        this.$refs.myFilesAudioPushNotify.files = null;
+        return false;
+      }
     },
     showErrorMsg(msg) {
       this.$swal({
@@ -68,7 +118,9 @@ export default {
               this.$swal({
                 title: this.trans('notification.settings_saved'),
                 type: 'success'
-              });
+              }).then((result) => {
+                window.location.reload();
+              })
             } else {
               if(response.data.errors && response.data.errors [0]) {
                 this.showErrorMsg(response.data.errors[0]);
@@ -98,16 +150,15 @@ export default {
           formData.append('gcm_browser_key', this.gcm_browser_key);
 
           if(this.audioCancelPush) {
-            formData.append('audio_push_cancellation', this.audioCancelPush);
+            formData.append('audio_ride_cancelation', this.audioCancelPush);
           }
 
-          if(this.audioPush) {
-            formData.append('audio_push', this.audioPush);
+          if(this.audioPushNewRide) {
+            formData.append('audio_new_ride', this.audioPushNewRide);
           }
 
-		  if(this.audioUrl) {
-            formData.append('audio_url', this.audioUrl);
-            formData.append('audio_beep_url', this.audioUrl);
+		      if(this.audioPushNotify) {
+            formData.append('audio_push_notification', this.audioPushNotify);
           }
 
           axios.post('/admin/libs/push_notification/save_settings/android', formData, {
@@ -120,6 +171,9 @@ export default {
               this.$swal({
                 title: this.trans('notification.settings_saved'),
                 type: 'success'
+              }).then((result) => {
+                console.log(result);
+                document.location.reload(true);
               });
             } else {
               if(response.data.errors && response.data.errors [0]) {
@@ -149,13 +203,18 @@ export default {
       this.show_upload_btn_p8 = true;
     }
 
-    if(!this.AudioPushUrl) {
-      this.show_upload_btn_audio_push = true;
+    if(!this.AudioRideCancellationUrl) {
+      this.showUpaloadAudioCancel = true;
+    }
+    
+    if(!this.AudioNewRideUrl) {
+      this.showUpaloadAudioNewRide = true;
     }
 
-    if(!this.AudioPushCancelUrl) {
-      this.show_upload_btn_audio_push_cancel = true;
+    if(!this.AudioPushNotificationUrl) {
+      this.showUpaloadAudioPushNotification = true;
     }
+
   },
 };
 </script>
@@ -243,78 +302,85 @@ export default {
             </div>
           </div>
           <br>
+          
           <div class="row">
+
+            <!--audio New Ride -->
             <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push') }}</h3>
-              <div v-if="AudioPushUrl">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_new_ride') }}</h3>
+              <div v-if="AudioNewRideUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioPushUrl" type="audio/x-wav; audio/x-mp3;" />
+                    <source od="ringSoundSource" :src="AudioNewRideUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioPushUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push = true">{{ 'Trocar' }}</a>
+                  <a class="btn btn-secondary" :href="AudioNewRideUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioNewRide = true">{{ 'Trocar' }}</a>
                 </div>
               </div>
-              <form v-if="show_upload_btn_audio_push" id="modalFormRetPush">
+              <form v-if="showUpaloadAudioNewRide" id="modalFormRetPush">
                 <input
                   type="file"
                   accept="audio/mp3"
                   :id="'file'"
-                  :ref="'myFilesAudio'"
+                  :ref="'myFilesAudioNewRide'"
                   class="form-control-file"
-                  @change="handleFileUploadAudio"
+                  @change="handleFileUploadAudioNewRide"
                 >
                 <br>
               </form>
             </div>
-			      <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_url') }}</h3>
-              <div v-if="AudioUrl">
-                <p>{{ trans('notification.audio_uploaded') }}</p>
-                <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioUrl" type="audio/x-wav; audio/x-mp3;" />
-                    Seu navegador não tem suporte a reprodução de áudio.
-                </audio>
-                <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="show_upload_btn_audio_url = true">{{ 'Trocar' }}</a>
-                </div>
-              </div>
-              <form v-if="show_upload_btn_audio_url || !AudioUrl" id="modalFormRetUrl">
-                <input
-                  type="file"
-                  accept="audio/mp3"
-                  :id="'file'"
-                  :ref="'myFilesAudioUrl'"
-                  class="form-control-file"
-                  @change="handleFileUploadAudioUrl"
-                >
-                <br>
-              </form>
-            </div>
+
+            <!--audio Ride Cancelation -->
             <div class="col-lg-12 audio-container">
-              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_cancellation') }}</h3>
-              <div v-if="AudioPushCancelUrl">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_cancellation_ride') }}</h3>
+              <div v-if="AudioRideCancellationUrl">
                 <p>{{ trans('notification.audio_uploaded') }}</p>
                 <audio controls id="ringSound">
-                    <source od="ringSoundSource" :src="AudioPushCancelUrl" type="audio/x-wav; audio/x-mp3;" />
+                    <source od="ringSoundSource" :src="AudioRideCancellationUrl" type="audio/x-wav; audio/x-mp3;" />
                     Seu navegador não tem suporte a reprodução de áudio.
                 </audio>
                 <div class="container-options">
-                  <a class="btn btn-secondary" :href="AudioPushCancelUrl" download>{{ 'Baixar' }}</a>
-                  <a class="btn btn-secondary" @click="show_upload_btn_audio_push_cancel = true">{{ 'Trocar' }}</a>
+                  <a class="btn btn-secondary" :href="AudioRideCancellationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioCancel = true">{{ 'Trocar' }}</a>
                 </div>
               </div>
-              <form v-if="show_upload_btn_audio_push_cancel" id="modalFormRetCancel">
+              <form v-if="showUpaloadAudioCancel" id="modalFormRetCancel">
                 <input
                   type="file"
                   accept="audio/mp3"
                   :id="'file'"
                   :ref="'myFilesAudioCancel'"
                   class="form-control-file"
-                  @change="handleFileUploadAudioCancel"
+                  @change="handleFileUploadAudioCancelRide"
+                >
+                <br>
+              </form>
+            </div>
+
+            <!--audio Push Notify -->
+			      <div class="col-lg-12 audio-container">
+              <h3 for="confirm_withdraw_picture">{{ trans('notification.audio_push_notify') }}</h3>
+              <div v-if="AudioPushNotificationUrl">
+                <p>{{ trans('notification.audio_uploaded') }}</p>
+                <audio controls id="ringSound">
+                    <source od="ringSoundSource" :src="AudioPushNotificationUrl" type="audio/x-wav; audio/x-mp3;" />
+                    Seu navegador não tem suporte a reprodução de áudio.
+                </audio>
+                <div class="container-options">
+                  <a class="btn btn-secondary" :href="AudioPushNotificationUrl" download>{{ 'Baixar' }}</a>
+                  <a class="btn btn-secondary" @click="showUpaloadAudioPushNotification = true">{{ 'Trocar' }}</a>
+                </div>
+              </div>
+              <form v-if="showUpaloadAudioPushNotification" id="modalFormRetUrl">
+                <input
+                  type="file"
+                  accept="audio/mp3"
+                  :id="'file'"
+                  :ref="'myFilesAudioPushNotify'"
+                  class="form-control-file"
+                  @change="handleFileUploadAudioPushNotify"
                 >
                 <br>
               </form>

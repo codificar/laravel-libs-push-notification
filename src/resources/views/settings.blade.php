@@ -28,6 +28,12 @@
 			audio-beep-url="{{ $audio_beep_url }}"
 			audio-url="{{ $audio_url }}"
 			audio-push-cancel-url="{{ $audio_push_cancellation }}"
+
+			audio-new-ride-url="{{ $audio_new_ride }}"
+			audio-ride-cancellation-url="{{ $audio_ride_cancelation }}"
+			audio-push-notification-url="{{ $audio_push_notification }}"
+			audio-msg-provider-notification-url="{{ $audio_msg_provider }}"
+			audio-msg-user-notification-url="{{ $audio_msg_user }}"
 		>
 		</settingsnotification>
 

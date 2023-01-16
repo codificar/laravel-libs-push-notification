@@ -8,6 +8,7 @@ Route::group(array('namespace' => 'Codificar\PushNotification\Http\Controllers')
         Route::get('/', array('as' => 'AdminGetPushNotificationSettings', 'uses' => 'PushNotificationController@getPushNotificationSettings'));
         Route::post('/save_settings/ios', array('as' => 'AdminSavePushNotificationSettingsIos', 'uses' => 'PushNotificationController@savePushNotificationSettingsIos'));
         Route::post('/save_settings/android', array('as' => 'AdminSavePushNotificationSettingsAndroid', 'uses' => 'PushNotificationController@savePushNotificationSettingsAndroid'));
+        Route::post('/save_settings/chat', array('as' => 'AdminSaveChatSettings', 'uses' => 'PushNotificationController@saveChatSettings'));
     });
 
 });

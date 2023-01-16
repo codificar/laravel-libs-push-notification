@@ -4,6 +4,7 @@ return array(
 	'user' 							=> 'Usuario',
 	'provider' 						=> 'Conductor',
 	'push_settings'					=> 'Configuración de notificaciones push',
+	'chat_settings'					=> 'Configuración de notificaciones chat',
 	'home'							=> 'Casa',
 	'push_notification'				=> 'Notificaciones push',
 	'ios_settings'					=> 'Configuración de iOS',
@@ -17,8 +18,17 @@ return array(
 	'yes'							=> 'Sí',
 	'no'							=> 'No',
 	'save_android_settings'			=> 'Guardar la configuración de Android',
+	'save_chat_settings'			=> 'Guardar la configuración de Chat',
 	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
 	'audio_push'					=> 'Archivo de audio',
 	'audio_push_cancellation'		=> 'Carrera cancelar audio',
-	"audio_url"						=> 'Audio Url'
+	"audio_url"						=> 'Audio Url',
+
+	'audio_new_ride'				=> 'Sonido de carrera nueva',
+	'audio_cancellation_ride'		=> 'Sonido de carrera cancelada',
+	'audio_push_notify'				=> 'Sonido de notificación push',
+	'audio_chat_provider'			=> 'Sonido de chat con el proveedor',
+	'audio_chat_user'				=> 'Sonido de chat con el usuario',
+	'audio_size_error'				=> 'El tamaño del archivo de audio excede el límite de 300kb',
+	'audio_type_error'  			=> 'Tipo de archivo de audio inválido, por favor seleccione un archivo de tipo mp3.',
 );
