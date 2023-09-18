@@ -21,5 +21,5 @@ return array(
     'audio_push' => 'Notificación Push de Audio para Android',
     'audio_push_cancellation' => 'Audio de Cancelación de Viaje',
     "audio_url" => 'URL de Audio de Sonido de Viaje',
-    "audio_uploaded" => 'Archivo de Audio Subido',
+    "audio_uploaded" => 'Archivo de Audio Subido'
 );
