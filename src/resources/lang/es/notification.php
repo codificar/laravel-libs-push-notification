@@ -20,5 +20,6 @@ return array(
 	'gcm_browser_key'    			=> 'Tecla de navegación GCM',
 	'audio_push'					=> 'Archivo de audio',
 	'audio_push_cancellation'		=> 'Carrera cancelar audio',
-	"audio_url"						=> 'Audio Url'
+	"audio_url"						=> 'Audio Url',
+	"audio_uploaded"				=> 'Archivo de audio enviado',
 );
