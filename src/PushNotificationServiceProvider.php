@@ -23,6 +23,11 @@ class PushNotificationServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__.'/../public/js' => public_path('vendor/codificar/push_notification'),
         ], 'public_vuejs_libs');
+
+        // Publish the tests files 
+        $this->publishes([
+            __DIR__ . '/../tests/' => base_path('tests/Unit/libs/push'),
+        ], 'publishes_tests');
     }
 
     public function register()
