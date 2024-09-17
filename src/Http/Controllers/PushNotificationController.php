@@ -18,6 +18,8 @@ use Auth;
 use Error;
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 use Input, Validator, View, Response, Session;
 use Settings;
@@ -52,6 +54,9 @@ class PushNotificationController extends Controller {
 		if($ios_auth_token_file_name) {
 			$ios_p8url = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name . ".p8";
 		}
+
+		$json_file_path_setting = Settings::findByKey('json_file_path');
+    	$json_file_path = $json_file_path_setting ? $json_file_path_setting->value : '';
 		
 		return View::make('push_notification::settings')
 					->with('ios_p8url', $ios_p8url)
@@ -69,7 +74,8 @@ class PushNotificationController extends Controller {
 					->with('audio_ride_cancelation', $audio_ride_cancelation)
 					->with('audio_push_notification', $audio_push_notification)
 					->with('audio_msg_provider', $audio_msg_provider)
-					->with('audio_msg_user', $audio_msg_user);
+					->with('audio_msg_user', $audio_msg_user)
+					->with('json_file_path', $json_file_path);
 	}
 
     public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {
@@ -155,25 +161,65 @@ class PushNotificationController extends Controller {
 		if(!$audioPushNotify['success']) {
 			$errors[] = $audioPushNotify['error'];
 		}
-
-		$success = true;
-		$error = false;
-
-		if(count($errors) > 0) {
-			$success = false;
-			$error = true;
+	
+		$jsonFile = $this->saveJsonFile();
+		if (!$jsonFile['success']) {
+			$errors[] = $jsonFile['error'];
 		}
-
-		// Return data
-		$data = array(
+	
+		$success = count($errors) === 0;
+		$error = !$success;
+	
+		$data = [
 			"success" => $success,
 			"error" => $error,
 			"errors" => $errors
-		);
-
+		];
+	
 		return new SaveSettingsResource($data);
-
 	}
+	
+	
+	protected function saveJsonFile(){
+		if (Input::hasFile('json_file')) {
+			try {
+				$storagePath = storage_path('firebase');
+	
+				if (!File::exists($storagePath)) {
+					File::makeDirectory($storagePath, 0755, true); 
+				}
+	
+				$file = Input::file('json_file');
+				$originalFileName = $file->getClientOriginalName(); 
+				$ext = $file->getClientOriginalExtension();
+				$size = round($file->getSize() / 1000); 
+	
+				if ($ext == "json" && $size < 1024) {
+					$file->move($storagePath, $originalFileName);
+					$json_file_path = $storagePath . '/' . $originalFileName;
+	
+					Settings::updateOrCreate(
+						['key' => 'json_file_path'],
+						[
+							'key' => 'json_file_path',
+							'value' => $json_file_path
+						]
+					);
+					return ['success' => true, 'error' => false];
+				} else {
+					return ['success' => false, 'error' => 'O arquivo deve ser um JSON válido e menor que 1MB.'];
+				}
+			} catch (Exception $e) {
+				return ['success' => false, 'error' => $e->getMessage()];
+			} catch (Error $e) {
+				Log::error($e->getMessage());
+				return ['success' => false, 'error' => $e->getMessage()];
+			}
+		} else {
+			return ['success' => true];
+		}
+	}
+	
 
 	protected function saveAudioNewRide() {
 		if(Input::hasFile('audio_new_ride')) {
