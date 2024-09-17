@@ -55,9 +55,6 @@ class PushNotificationController extends Controller {
 			$ios_p8url = storage_path() . "/app/ios_push/" . $ios_auth_token_file_name . ".p8";
 		}
 
-		$json_file_path_setting = Settings::findByKey('json_file_path');
-    	$json_file_path = $json_file_path_setting ? $json_file_path_setting->value : '';
-		
 		return View::make('push_notification::settings')
 					->with('ios_p8url', $ios_p8url)
 					->with('ios_key_id', $ios_key_id)
@@ -75,7 +72,6 @@ class PushNotificationController extends Controller {
 					->with('audio_push_notification', $audio_push_notification)
 					->with('audio_msg_provider', $audio_msg_provider)
 					->with('audio_msg_user', $audio_msg_user)
-					->with('json_file_path', $json_file_path);
 	}
 
     public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {

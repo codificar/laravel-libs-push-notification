@@ -34,7 +34,6 @@
 			audio-push-notification-url="{{ $audio_push_notification }}"
 			audio-msg-provider-notification-url="{{ $audio_msg_provider }}"
 			audio-msg-user-notification-url="{{ $audio_msg_user }}"
-			json-file-path="{{ $json_file_path }}"
 		>
 		</settingsnotification>
 

@@ -11,7 +11,6 @@ export default {
     "AudioNewRideUrl", 
     "AudioRideCancellationUrl", 
     "AudioPushNotificationUrl",
-    "JsonFilePath"
   ],
   data() {
     return {
@@ -29,7 +28,6 @@ export default {
       showUpaloadAudioNewRide: false,
       showUpaloadAudioCancel: false,
       showUpaloadAudioPushNotification: false,
-      json_file_path: this.JsonFilePath
     };
   },
   methods: {
@@ -316,14 +314,6 @@ export default {
 
             <div class="col-lg-12 audio-container">
               <h3 for="confirm_withdraw_picture">{{ trans('notification.new_json_file') }}</h3>
-              <!-- Exibir o arquivo JSON se ele já foi carregado -->
-              <div v-if="json_file_path">
-                <p>{{ trans('notification.file_uploaded') }}</p>
-                <a class="btn btn-secondary" :href="json_file_path" download>{{ trans('notification.download') }}</a>
-                <a class="btn btn-secondary" @click="showUploadJson = true">{{ trans('notification.replace') }}</a>
-              </div>
-              <!-- Formulário de upload caso o arquivo ainda não tenha sido carregado -->
-              <form v-if="!json_file_path || showUploadJson">
                 <input
                   type="file"
                   accept=".json"
@@ -331,8 +321,6 @@ export default {
                   @change="handleFileUploadJson"
                   class="form-control-file"
                 >
-                <br>
-              </form>
             </div>
 
             <!--audio New Ride -->
