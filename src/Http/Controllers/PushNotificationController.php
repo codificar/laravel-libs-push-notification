@@ -71,7 +71,7 @@ class PushNotificationController extends Controller {
 					->with('audio_ride_cancelation', $audio_ride_cancelation)
 					->with('audio_push_notification', $audio_push_notification)
 					->with('audio_msg_provider', $audio_msg_provider)
-					->with('audio_msg_user', $audio_msg_user)
+					->with('audio_msg_user', $audio_msg_user);
 	}
 
     public function savePushNotificationSettingsIos(SaveSettingsFormRequest $request) {
