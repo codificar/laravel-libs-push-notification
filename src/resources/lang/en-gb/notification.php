@@ -1,0 +1,37 @@
+<?php
+
+return array(
+	'user' 							=> 'User',
+	'provider' 						=> 'Driver',
+	'push_settings'					=> 'Push Notification Settings',
+	'chat_settings'					=> 'Chat Notification Settings',
+	'home'							=> 'Home',
+	'push_notification'				=> 'Push Notifications',
+	'ios_settings'					=> 'iOS Settings',
+	'android_settings'				=> 'Android Settings',
+	'team_id'						=> 'Team ID',
+	'key_id'						=> 'Key ID',
+	'provider_package'				=> 'Provider App Package',
+	'user_package'					=> 'User App Package',
+	'save_ios_settings'				=> 'Save iOS Settings',
+	'settings_saved'				=> 'Settings saved',
+	'yes'							=> 'Yes',
+	'no'							=> 'No',
+	'save_android_settings'			=> 'Save Android Settings',
+	'save_chat_settings'			=> 'Save Chat Settings',
+	'gcm_browser_key'    			=> 'GCM Browser Key',
+	'audio_push'					=> 'Push Notification Audio File',
+	'audio_push_cancellation'		=> 'Audio Cancellation File',
+	'audio_url'						=> 'Audio URL',
+	'audio_uploaded'				=> 'Audio file uploaded',
+
+	'audio_new_ride'				=> 'New Ride Beep',
+	'audio_cancellation_ride'		=> 'Ride Cancellation Beep',
+	'audio_push_notify'				=> 'Push Notification Beep',
+	'audio_chat_provider'			=> 'Provider Chat Message Beep',
+	'audio_chat_user'				=> 'User Chat Message Beep',
+	'audio_size_error'				=> 'Audio file size exceeds the 300kb limit',
+	'audio_type_error'				=> 'Invalid audio file type, please choose an mp3 file.',
+	'new_json_file'					=> 'New JSON File',
+);
+
